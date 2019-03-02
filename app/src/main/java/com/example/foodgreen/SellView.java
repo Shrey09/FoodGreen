@@ -19,7 +19,7 @@ public class SellView extends AppCompatActivity {
     Integer [] quantity={2,3,4,5,2,3,4,5};
     String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
     Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
-    ImageView homebutton, buybutton;
+    ImageView homebutton, buybutton, neworderbutton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,15 @@ public class SellView extends AppCompatActivity {
             public void onClick(View v) {
                 Intent buy_button = new Intent(v.getContext(), BuyView.class);
                 startActivity(buy_button);
+            }
+        });
+
+        neworderbutton = findViewById(R.id.addbtn);
+        neworderbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent new_order_button = new Intent(v.getContext(), new_order_sell.class);
+                startActivity(new_order_button);
             }
         });
 

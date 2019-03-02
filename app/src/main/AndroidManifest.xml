@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".BuyView"></activity>
         <activity android:name=".SellView"></activity>
+        <activity android:name=".new_order_sell"></activity>
     </application>
 
 </manifest>
