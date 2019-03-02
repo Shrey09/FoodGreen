@@ -17,7 +17,7 @@ public class BuyView extends AppCompatActivity {
     String [] price={"22","23","24","25","22","23","24","25"};
     Integer [] quantity={2,3,4,5,2,3,4,5};
     String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
-    Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food3,R.drawable.food,R.drawable.food2,R.drawable.food3,R.drawable.food,R.drawable.food2};
+    Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
     android.support.v7.widget.Toolbar toolbar;
     ImageView homeButton, sellButton;
 

@@ -70,7 +70,7 @@ public class SellView extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            View view=getLayoutInflater().inflate(R.layout.buy_list_layout,null);
+            View view=getLayoutInflater().inflate(R.layout.sell_list_layout,null);
 
             ImageView mImageView=(ImageView)view.findViewById(R.id.imageview);
             TextView dishname=(TextView) view.findViewById(R.id.dishname);
