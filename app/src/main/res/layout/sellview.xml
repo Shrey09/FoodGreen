@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/food2"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    tools:context=".SellView">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/new_bar"
@@ -15,11 +14,43 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <ImageButton
+        android:id="@+id/filterbtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right|end"
+        android:paddingRight="10dp"
+        android:paddingTop="60dp"
+        android:background="@null"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/filter_symbol" />
 
-    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="60dp"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/foodlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="8dp" />
+
+    </RelativeLayout>
+    <ImageButton
+        android:id="@+id/addbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingBottom="65dp"
+        android:paddingRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@null"
+        android:src="@drawable/add" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,6 +69,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:background="@null"
+                android:tint="@color/colorWhite"
                 android:src="@drawable/home"
                 android:text="Home" />
             <TextView
@@ -59,8 +91,8 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:tint="@color/colorWhite"
                 android:background="@null"
+                android:tint="@color/colorWhite"
                 android:src="@drawable/buy"
                 android:text="Buy" />
             <TextView
@@ -82,7 +114,6 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:tint="@color/colorWhite"
                 android:background="@null"
                 android:src="@drawable/sell"
                 android:text="Sell" />
@@ -95,5 +126,4 @@
                 android:text="SELL"/>
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>

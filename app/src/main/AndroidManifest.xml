@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< Updated upstream
+=======
+        <activity android:name=".BuyView"></activity>
+        <activity android:name=".SellView"></activity>
+>>>>>>> Stashed changes
     </application>
 
 </manifest>
