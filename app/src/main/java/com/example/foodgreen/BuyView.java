@@ -29,11 +29,11 @@ public class BuyView extends AppCompatActivity {
     String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
     Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
     android.support.v7.widget.Toolbar toolbar;
-    ImageView homeButton, sellButton, neworderbutton;
-    ImageButton filter;
+    ImageView homeButton, sellButton, neworderbutton, filter;
     Spinner foodcategory;
     TextView pricetext;
     SeekBar pricebar;
+    Button okButton, cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,73 +70,22 @@ public class BuyView extends AppCompatActivity {
             public void onClick(View v) {
                 Intent new_order_button = new Intent(v.getContext(), new_order_sell.class);
                 startActivity(new_order_button);
-
-//                AlertDialog.Builder mBuilder=new AlertDialog.Builder(BuyView.this);
-//                View mView =getLayoutInflater().inflate(R.layout.filterview,null);
-//                mBuilder.setTitle("Filter Dialog");
-//
-//                foodcategory=(Spinner)mView.findViewById(R.id.foodcategory);
-//                pricebar=(SeekBar)mView.findViewById(R.id.pricebar);
-//                pricetext=(TextView) mView.findViewById(R.id.pricetext);
-//
-//                pricetext.setText(String.valueOf(pricebar.getProgress()));
-//                pricebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//                    @Override
-//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                        pricetext.setText(String.valueOf(pricebar.getProgress()));
-//                    }
-//
-//                    @Override
-//                    public void onStartTrackingTouch(SeekBar seekBar) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onStopTrackingTouch(SeekBar seekBar) {
-//
-//                    }
-//                });
-//                ArrayAdapter<String> adapter=new ArrayAdapter<String>(BuyView.this
-//                        ,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.foodmenu));
-//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-//                foodcategory.setAdapter(adapter);
-//
-//                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("Select food Category"))
-//                        {
-//                            Toast.makeText(BuyView.this,
-//                                    foodcategory.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-//                            dialog.dismiss();
-//                        }
-//                    }
-//                });
-//                mBuilder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//                mBuilder.setView(mView);
-//                AlertDialog dialog=mBuilder.create();
-//                dialog.show();
             }
         });
 
-        filter=findViewById(R.id.filterbtn);
+        filter = findViewById(R.id.filterbtn);
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                AlertDialog.Builder mBuilder=new AlertDialog.Builder(BuyView.this);
+                final AlertDialog mBuilder = new AlertDialog.Builder(BuyView.this).create();
                 View mView =getLayoutInflater().inflate(R.layout.filterview,null);
-                mBuilder.setTitle("Filter Dialog");
+                mBuilder.setTitle("Filter");
 
                 foodcategory=(Spinner)mView.findViewById(R.id.foodcategory);
                 pricebar=(SeekBar)mView.findViewById(R.id.pricebar);
                 pricetext=(TextView) mView.findViewById(R.id.pricetext);
+                okButton = (Button) mView.findViewById(R.id.okButton);
+                cancelButton = (Button) mView.findViewById(R.id.cancelButton);
 
                 pricetext.setText(String.valueOf(pricebar.getProgress()));
                 pricebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -160,27 +109,30 @@ public class BuyView extends AppCompatActivity {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                 foodcategory.setAdapter(adapter);
 
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("Select food Category"))
                         {
                             Toast.makeText(BuyView.this,
-                                    foodcategory.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                                    foodcategory.getSelectedItem().toString() + " selected",Toast.LENGTH_SHORT).show();
+                            mBuilder.dismiss();
+                        }
+                        else {
+                            mBuilder.dismiss();
                         }
                     }
                 });
-                mBuilder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(View v) {
+                        mBuilder.dismiss();
                     }
                 });
 
                 mBuilder.setView(mView);
-                AlertDialog dialog=mBuilder.create();
-                dialog.show();
+                mBuilder.show();
             }
         });
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -27,11 +28,11 @@ public class SellView extends AppCompatActivity {
     Integer [] quantity={2,3,4,5,2,3,4,5};
     String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
     Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
-    ImageView homebutton, buybutton, neworderbutton;
-    ImageButton filter;
+    ImageView homebutton, buybutton, neworderbutton, filter;
     Spinner foodcategory;
     TextView pricetext;
     SeekBar pricebar;
+    Button okButton, cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +77,15 @@ public class SellView extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder mBuilder=new AlertDialog.Builder(SellView.this);
+                final AlertDialog mBuilder=new AlertDialog.Builder(SellView.this).create();
                 View mView =getLayoutInflater().inflate(R.layout.filterview,null);
-                mBuilder.setTitle("Filter Dialog");
+                mBuilder.setTitle("Filter");
 
                 foodcategory=(Spinner)mView.findViewById(R.id.foodcategory);
                 pricebar=(SeekBar)mView.findViewById(R.id.pricebar);
                 pricetext=(TextView) mView.findViewById(R.id.pricetext);
+                okButton = (Button) mView.findViewById(R.id.okButton);
+                cancelButton = (Button) mView.findViewById(R.id.cancelButton);
 
                 pricetext.setText(String.valueOf(pricebar.getProgress()));
                 pricebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -106,29 +109,30 @@ public class SellView extends AppCompatActivity {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                 foodcategory.setAdapter(adapter);
 
-                mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("Select food Category"))
                         {
                             Toast.makeText(SellView.this,
-                                    foodcategory.getSelectedItem().toString(),Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                                    foodcategory.getSelectedItem().toString() + " selected",Toast.LENGTH_SHORT).show();
+                            mBuilder.dismiss();
+                        }
+                        else {
+                            mBuilder.dismiss();
                         }
                     }
                 });
-                mBuilder.setNegativeButton("Clear", new DialogInterface.OnClickListener() {
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(View v) {
+                        mBuilder.dismiss();
                     }
                 });
 
                 mBuilder.setView(mView);
-                AlertDialog dialog=mBuilder.create();
-                dialog.show();
-
-
+                mBuilder.show();
             }
         });
 

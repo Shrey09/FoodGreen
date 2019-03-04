@@ -20,6 +20,7 @@
         android:ems="10"
         android:text="Max Price"
         android:textStyle="bold"
+        android:textSize="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"/>
 
@@ -28,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textSize="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"/>
 
@@ -37,7 +39,29 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
+        android:progressDrawable="@drawable/red_scrubber_progress"
+        android:thumb="@drawable/red_scrubber_control"
         android:max="100"
-        android:progress="1"></SeekBar>
+        android:progress="100"></SeekBar>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:text="OK"/>
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="20dp"
+            android:text="CANCEL"/>
+    </LinearLayout>
 
 </LinearLayout>
