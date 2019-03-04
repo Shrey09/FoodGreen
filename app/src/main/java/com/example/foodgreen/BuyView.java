@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ public class BuyView extends AppCompatActivity {
     Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
     android.support.v7.widget.Toolbar toolbar;
     ImageView homeButton, sellButton;
+    ImageButton button_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,14 @@ public class BuyView extends AppCompatActivity {
             }
         });
 
+        button_add = findViewById(R.id.addbtn);
+        button_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent buy_details_intent = new Intent(v.getContext(), Activity_Buy_Details.class);
+                startActivity(buy_details_intent);
+            }
+        });
 
     }
     @Override
