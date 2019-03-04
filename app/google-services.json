@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "653106186009",
+    "firebase_url": "https://foodgreen-d6b87.firebaseio.com",
+    "project_id": "foodgreen-d6b87",
+    "storage_bucket": "foodgreen-d6b87.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653106186009:android:6abc0b2338904a80",
+        "android_client_info": {
+          "package_name": "com.example.foodgreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653106186009-n3t2t6kkkej1ash9b5a73homt272rjpc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodgreen",
+            "certificate_hash": "f5ac4f4d560f2c019ef1874c4f5ea4ad3e56397c"
+          }
+        },
+        {
+          "client_id": "653106186009-tamki5fpk99n4il3a23dpa5dtnspa0s2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvXZLHqLPfKY4BrRQgr625kTmsWbm6cgE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653106186009-tamki5fpk99n4il3a23dpa5dtnspa0s2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

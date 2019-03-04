@@ -85,7 +85,18 @@
             android:hint="Retype Password"
             android:inputType="textPassword" />
 
-
+        <Button
+            android:id="@+id/registerbutton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp"
+            android:background="@color/colorPrimary"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@string/fontfamily" />
 
     </LinearLayout>
 </LinearLayout>
