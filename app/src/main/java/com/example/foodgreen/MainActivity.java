@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Food Green");
+        getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
         buybutton = findViewById(R.id.buybtn);
         sellbutton = findViewById(R.id.sellbtn);

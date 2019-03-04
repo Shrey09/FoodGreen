@@ -30,7 +30,7 @@ public class BuyView extends AppCompatActivity {
         food=(ListView) findViewById(R.id.foodlist);
         toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Food Green");
+        getSupportActionBar().setTitle("FoodGreen");
         CustomListView customListView=new CustomListView();
         food.setAdapter(customListView);
 
@@ -86,7 +86,7 @@ public class BuyView extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
 
             View view=getLayoutInflater().inflate(R.layout.buy_list_layout,null);
-
+            
             ImageView mImageView=(ImageView)view.findViewById(R.id.imageview);
             TextView  dishname=(TextView) view.findViewById(R.id.dishname);
             TextView  priceval=(TextView) view.findViewById(R.id.valprice);
