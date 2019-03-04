@@ -14,18 +14,6 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageButton
-        android:id="@+id/filterbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|right|end"
-        android:paddingRight="10dp"
-        android:paddingTop="60dp"
-        android:background="@null"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/filter_symbol" />
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,6 +28,19 @@
             tools:layout_editor_absoluteX="8dp" />
 
     </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/filterbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|right|end"
+        android:paddingRight="10dp"
+        android:paddingTop="60dp"
+        android:background="@null"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/filter_symbol" />
+
     <ImageButton
         android:id="@+id/addbtn"
         android:layout_width="wrap_content"

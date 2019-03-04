@@ -4,4 +4,9 @@
     <string name="buy">Buy</string>
     <string name="sell">Sell</string>
     <string name="fontfamily">sans-serif</string>
+    <string-array name="foodmenu">
+        <item>Select food category</item>
+        <item>Gujarati</item>
+        <item>Punjbai</item>
+    </string-array>
 </resources>

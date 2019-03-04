@@ -1,16 +1,24 @@
 package com.example.foodgreen;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SellView extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
@@ -20,7 +28,11 @@ public class SellView extends AppCompatActivity {
     Integer [] quantity={2,3,4,5,2,3,4,5};
     String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
     Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
-    ImageView homebutton, buybutton, neworderbutton;
+    ImageView homebutton, buybutton, neworderbutton, filter;
+    Spinner foodcategory;
+    TextView pricetext;
+    SeekBar pricebar;
+    Button okButton, cancelButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +69,70 @@ public class SellView extends AppCompatActivity {
             public void onClick(View v) {
                 Intent new_order_button = new Intent(v.getContext(), new_order_sell.class);
                 startActivity(new_order_button);
+            }
+        });
+
+        filter=findViewById(R.id.filterbtn);
+        filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                final AlertDialog mBuilder=new AlertDialog.Builder(SellView.this).create();
+                View mView =getLayoutInflater().inflate(R.layout.filterview,null);
+                mBuilder.setTitle("Filter");
+
+                foodcategory=(Spinner)mView.findViewById(R.id.foodcategory);
+                pricebar=(SeekBar)mView.findViewById(R.id.pricebar);
+                pricetext=(TextView) mView.findViewById(R.id.pricetext);
+                okButton = (Button) mView.findViewById(R.id.okButton);
+                cancelButton = (Button) mView.findViewById(R.id.cancelButton);
+
+                pricetext.setText(String.valueOf(pricebar.getProgress()));
+                pricebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                    @Override
+                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                        pricetext.setText(String.valueOf(pricebar.getProgress()));
+                    }
+
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(SellView.this
+                        ,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.foodmenu));
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                foodcategory.setAdapter(adapter);
+
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("Select food Category"))
+                        {
+                            Toast.makeText(SellView.this,
+                                    foodcategory.getSelectedItem().toString() + " selected",Toast.LENGTH_SHORT).show();
+                            mBuilder.dismiss();
+                        }
+                        else {
+                            mBuilder.dismiss();
+                        }
+                    }
+                });
+
+                cancelButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBuilder.dismiss();
+                    }
+                });
+
+                mBuilder.setView(mView);
+                mBuilder.show();
             }
         });
 
