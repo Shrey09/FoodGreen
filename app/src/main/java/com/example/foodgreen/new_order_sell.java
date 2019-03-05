@@ -2,6 +2,7 @@ package com.example.foodgreen;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 
 public class new_order_sell extends AppCompatActivity implements View.OnClickListener{
 
+    android.support.v7.widget.Toolbar toolbar;
     Button btn_cooked_date, btn_cooked_time, btn_expire_date,btn_expire_time;
     EditText sell_cook_date, sell_cook_time, sell_expire_date, sell_expire_time;
     int ExpireHour,ExpireMinute,btnCookedYear,btnCookedDay,btnCookedMonth,btnExpireYear,btnExpireMonth,btnExpireDay,CookHour,CookMinute;
@@ -23,6 +25,10 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__sell);
+        toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("FoodGreen");
+        toolbar.setTitleTextColor(Color.BLACK);
 
 
         btn_cooked_date = findViewById(R.id.btn_cooked_date);

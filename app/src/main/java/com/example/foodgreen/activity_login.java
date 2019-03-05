@@ -22,7 +22,7 @@ public class activity_login extends AppCompatActivity {
         create_acc = findViewById(R.id.textcreate);
         toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Food Green");
+        getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
 
         create_acc.setOnClickListener(new View.OnClickListener() {
