@@ -16,7 +16,7 @@
     </android.support.v7.widget.Toolbar>
 
     <EditText
-        android:id="@+id/edit_uname"
+        android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_text"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="10dp"/>
 
     <EditText
-        android:id="@+id/edit_password"
+        android:id="@+id/login_passw"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/custom_text"
@@ -54,7 +54,7 @@
         android:textSize="17sp" />
 
     <Button
-        android:id="@+id/registerbutton"
+        android:id="@+id/loginButton"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Login"

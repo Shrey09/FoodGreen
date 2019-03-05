@@ -30,7 +30,7 @@
             android:padding="10dp"
             android:background="@drawable/custom_text"
             android:textSize="20dp"
-            android:hint="UserName"
+            android:hint="Name"
             android:inputType="textPersonName" />
         <EditText
             android:id="@+id/editemail"
