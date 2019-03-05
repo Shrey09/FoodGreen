@@ -1,5 +1,6 @@
 package com.example.foodgreen;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.graphics.Color;
@@ -58,7 +59,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
             btnCookedDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                     new DatePickerDialog.OnDateSetListener() {
 
                         @Override
@@ -79,7 +80,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
             CookMinute = c.get(Calendar.MINUTE);
 
             // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                     new TimePickerDialog.OnTimeSetListener() {
 
                         @Override
@@ -100,7 +101,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
             btnExpireDay = c.get(Calendar.DAY_OF_MONTH);
 
 
-            DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this,AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                     new DatePickerDialog.OnDateSetListener() {
 
                         @Override
@@ -121,7 +122,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
             ExpireMinute = c.get(Calendar.MINUTE);
 
             // Launch Time Picker Dialog
-            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,
                     new TimePickerDialog.OnTimeSetListener() {
 
                         @Override
