@@ -51,18 +51,12 @@
         android:layout_marginTop="10dp"
         android:text="Forgot Password?"
         android:textSize="17sp" />
-<<<<<<< HEAD
 
-=======
->>>>>>> 28c5020722c430984f876da709a18880027d357e
     <Button
         android:id="@+id/btn_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-=======
         android:padding="10dp"
->>>>>>> 28c5020722c430984f876da709a18880027d357e
         android:text="LogIn"
         android:fontFamily="@string/fontfamily"
         android:layout_marginTop="10dp"

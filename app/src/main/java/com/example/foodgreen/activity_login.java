@@ -18,34 +18,23 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-<<<<<<< HEAD
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-=======
-
->>>>>>> 28c5020722c430984f876da709a18880027d357e
 public class activity_login extends AppCompatActivity implements View.OnClickListener {
     android.support.v7.widget.Toolbar toolbar;
     private static final String TAG = "EmailPassword";
 
     private TextView create_acc, forgot_pass ;
     private Button btnLogin;
-<<<<<<< HEAD
     private EditText Email, Password;
-=======
-    EditText Email, Password;
->>>>>>> 28c5020722c430984f876da709a18880027d357e
     private String email;
     private String password;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +44,8 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
         forgot_pass = findViewById(R.id.textforgotpass);
         btnLogin = findViewById(R.id.btn_login);
         Email = findViewById(R.id.login_email);
-<<<<<<< HEAD
+
         Password = findViewById(R.id.login_passw);
-=======
-        Password = findViewById(R.id.login_password);
->>>>>>> 28c5020722c430984f876da709a18880027d357e
 
         toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
         setSupportActionBar(toolbar);
@@ -82,12 +68,6 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
             }
         };
 
-
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 28c5020722c430984f876da709a18880027d357e
         btnLogin.setOnClickListener(this);
 
         create_acc.setOnClickListener(new View.OnClickListener() {
@@ -112,10 +92,6 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
     }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 28c5020722c430984f876da709a18880027d357e
     @Override
     public void onClick(View view) {
         if (view == btnLogin) {
@@ -134,6 +110,10 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 
     private void signIn(String email, String password) {
         email = Email.getText().toString();
@@ -160,13 +140,5 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
                 });
 
     }
-<<<<<<< HEAD
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
-=======
->>>>>>> 28c5020722c430984f876da709a18880027d357e
 }
 
