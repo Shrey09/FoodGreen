@@ -9,10 +9,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class activity_login extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
+    private static final String TAG = "EmailPassword";
 
     private TextView create_acc;
+    private String email;
+    private String password;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
 
     @Override
