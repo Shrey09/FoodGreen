@@ -43,10 +43,11 @@ public class activity_register extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth.getCurrentUser()==null){
+        Log.i("Message", "activity_register called");
+        /*if(mAuth.getCurrentUser()==null){
             finish();
             startActivity(new Intent(this, activity_login.class));
-        }
+        }*/
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         Reg_Uname = findViewById(R.id.edituname);
