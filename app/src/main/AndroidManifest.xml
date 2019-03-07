@@ -21,6 +21,7 @@
         <activity android:name=".new_order_sell"></activity>
         <activity android:name=".activity_register"></activity>
         <activity android:name=".activity_login"></activity>
+        <activity android:name=".show_data_sell"></activity>
         
     </application>
 

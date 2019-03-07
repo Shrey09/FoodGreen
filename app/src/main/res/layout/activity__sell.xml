@@ -27,7 +27,7 @@
 
 
             <EditText
-                android:id="@+id/sell_dishname"
+                android:id="@+id/enter_dishname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -40,7 +40,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/edit_price"
+                android:id="@+id/enter_price"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -54,7 +54,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/edit_quantity"
+                android:id="@+id/enter_quantity"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -67,7 +67,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/enter_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -187,7 +187,7 @@
                     </LinearLayout>
 
                     <Button
-                        android:id="@+id/registerbutton"
+                        android:id="@+id/submit_button"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
