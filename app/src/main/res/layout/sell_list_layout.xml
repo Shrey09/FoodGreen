@@ -21,11 +21,6 @@
                 android:layout_height="wrap_content"
                 android:text="first dish" />
 
-            <ImageView
-                android:id="@+id/imageview"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_weight="0.11" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,7 +36,7 @@
                 android:layout_alignParentTop="true"
 
                 android:layout_weight="1"
-                android:text="price" />
+                android:text="location" />
 
             <TextView
                 android:id="@+id/quantity"
@@ -53,12 +48,20 @@
                 android:text="quantity" />
 
             <TextView
-                android:id="@+id/location"
+                android:id="@+id/expectedtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_weight="1"
-                android:text="location" />
+                android:text="expected time" />
+
+            <TextView
+                android:id="@+id/expecteddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_weight="1"
+                android:text="expected date" />
 
         </LinearLayout>
 
@@ -69,7 +72,7 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/valprice"
+                android:id="@+id/vallocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -83,11 +86,17 @@
                 android:layout_weight="1" />
 
             <TextView
-                android:id="@+id/vallocation"
+                android:id="@+id/valexpectedtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/valexpecteddate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
         </LinearLayout>
     </LinearLayout>

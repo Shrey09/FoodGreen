@@ -54,7 +54,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -123,7 +123,7 @@
 
 
                 <Button
-                    android:id="@+id/registerbutton"
+                    android:id="@+id/buy_place_order"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

@@ -3,6 +3,7 @@ package com.example.foodgreen;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -20,14 +21,32 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 public class SellView extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
     ListView food;
-    String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
-    String [] price={"22","23","24","25","22","23","24","25"};
-    Integer [] quantity={2,3,4,5,2,3,4,5};
-    String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
-    Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
+
+    // create arraylist to store dynamically
+    ArrayList<String> dish_name_array = new ArrayList<String>();
+    ArrayList<String> location_array = new ArrayList<String>();
+    ArrayList<String> quantity_array = new ArrayList<String>();
+    ArrayList<String> time_array = new ArrayList<String>();
+    ArrayList<String> date_array = new ArrayList<String>();
+    String[] dish, quantity, location, time, date;
+
+    //String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
+    //String [] price={"22","23","24","25","22","23","24","25"};
+    //Integer [] quantity={2,3,4,5,2,3,4,5};
+    //String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
+    //Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
     ImageView homebutton, buybutton, neworderbutton, filter;
     Spinner foodcategory;
     TextView pricetext;
@@ -41,9 +60,6 @@ public class SellView extends AppCompatActivity {
         toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
         setSupportActionBar(toolbar);
         food=(ListView) findViewById(R.id.foodlist);
-
-        CustomListView customListView=new CustomListView();
-        food.setAdapter(customListView);
 
         homebutton = findViewById(R.id.homebtn);
         homebutton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +152,49 @@ public class SellView extends AppCompatActivity {
             }
         });
 
+        // fetching data part
+        FirebaseDatabase firebaseDatabase;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference buy_data_open_ref = root_ref.child("buy_data_open");
+
+        buy_data_open_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                    quantity_array.add(ds.child("data_quantity").getValue(String.class));
+                    time_array.add(ds.child("data_expected_time").getValue(String.class));
+                    date_array.add(ds.child("data_expected_date").getValue(String.class));
+                    location_array.add("Dalhousie University");
+                }
+
+                int count;
+                dish = new String[dish_name_array.size()];
+                quantity = new String[dish_name_array.size()];
+                location = new String[dish_name_array.size()];
+                time = new String[dish_name_array.size()];
+                date = new String[dish_name_array.size()];
+                for (count=0; count < dish_name_array.size(); count++){
+                    dish[count] = dish_name_array.get(count);
+                    time[count] = time_array.get(count);
+                    date[count] = date_array.get(count);
+                    quantity[count] = quantity_array.get(count);
+                    location[count] = location_array.get(count);
+                }
+
+                CustomListView customListView=new CustomListView();
+                food.setAdapter(customListView);
+                customListView.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -153,7 +212,7 @@ public class SellView extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return images.length;
+            return dish.length;
         }
 
         @Override
@@ -171,17 +230,18 @@ public class SellView extends AppCompatActivity {
 
             View view=getLayoutInflater().inflate(R.layout.sell_list_layout,null);
 
-            ImageView mImageView=(ImageView)view.findViewById(R.id.imageview);
             TextView dishname=(TextView) view.findViewById(R.id.dishname);
-            TextView  priceval=(TextView) view.findViewById(R.id.valprice);
-            TextView  quantityval=(TextView) view.findViewById(R.id.valquantity);
-            TextView  locationval=(TextView) view.findViewById(R.id.vallocation);
+            TextView quantityval=(TextView) view.findViewById(R.id.valquantity);
+            TextView locationval=(TextView) view.findViewById(R.id.vallocation);
+            TextView timeval = (TextView) view.findViewById(R.id.valexpectedtime);
+            TextView dateval = (TextView) view.findViewById(R.id.valexpecteddate);
 
-            mImageView.setImageResource(images[position]);
+            //mImageView.setImageResource(images[position]);
             dishname.setText(dish[position]);
-            priceval.setText(price[position]);
             quantityval.setText(String.valueOf(quantity[position]));
             locationval.setText(location[position]);
+            timeval.setText(time[position]);
+            dateval.setText(date[position]);
             return view;
         }
     }
