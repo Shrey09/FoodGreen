@@ -83,7 +83,7 @@ public class BuyView extends AppCompatActivity {
         neworderbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent new_order_button = new Intent(v.getContext(), new_order_sell.class);
+                Intent new_order_button = new Intent(v.getContext(), Activity_buy.class);
                 startActivity(new_order_button);
             }
         });
