@@ -2,9 +2,11 @@ package com.example.foodgreen;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +22,29 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 public class BuyView extends AppCompatActivity {
 
     ListView food;
-    String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
-    String [] price={"22","23","24","25","22","23","24","25"};
-    Integer [] quantity={2,3,4,5,2,3,4,5};
-    String [] location={"qunipool","spring","sexton","spring","qunipool","spring","sexton","spring"};
-    Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2,R.drawable.food2,R.drawable.food,R.drawable.food2};
+    ArrayList<String> dish_name_array = new ArrayList<String>();
+    ArrayList<String> price_array = new ArrayList<String>();
+    ArrayList<String> quantity_array = new ArrayList<String>();
+    ArrayList<String> location_array = new ArrayList<String>();
+    ArrayList<String> images_array = new ArrayList<String>();
+    String[] dish, price, quantity, location, images;
+    //String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
+    //String [] price={"22","23","24","25","22","23","24","25"};
+    //Integer [] quantity={2,3,4,5,2,3,4,5};
+    //String [] location={"qunipool","spring","sexton"};
+    //Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2};
     android.support.v7.widget.Toolbar toolbar;
     ImageView homeButton, sellButton, neworderbutton, filter;
     Spinner foodcategory;
@@ -44,8 +61,6 @@ public class BuyView extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("FoodGreen");
-        CustomListView customListView=new CustomListView();
-        food.setAdapter(customListView);
 
         homeButton = findViewById(R.id.homebtn);
         homeButton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +151,49 @@ public class BuyView extends AppCompatActivity {
             }
         });
 
+        FirebaseDatabase firebaseDatabase;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference sell_data_open_ref = root_ref.child("sell_data_open");
+
+        sell_data_open_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i("Test", "INSIDE sell data");
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                    price_array.add(ds.child("data_dish_price").getValue(String.class));
+                    quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                    location_array.add("Dalhousie University");
+                    images_array.add("R.drawable.food");
+                }
+
+                int count;
+                dish = new String[dish_name_array.size()];
+                price = new String[dish_name_array.size()];
+                quantity = new String[dish_name_array.size()];
+                location = new String[dish_name_array.size()];
+                images = new String[dish_name_array.size()];
+
+                Log.i("Count: ", Integer.toString(dish_name_array.size()));
+                for (count=0; count < dish_name_array.size(); count++){
+                    dish[count] = dish_name_array.get(count);
+                    price[count] = price_array.get(count);
+                    quantity[count] = quantity_array.get(count);
+                    location[count] = location_array.get(count);
+                    //images[count] = images_array.get(count);
+                }
+                CustomListView customListView=new CustomListView();
+                food.setAdapter(customListView);
+                customListView.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
     public void openDialog(){
 
@@ -179,7 +237,7 @@ public class BuyView extends AppCompatActivity {
             TextView  quantityval=(TextView) view.findViewById(R.id.valquantity);
             TextView  locationval=(TextView) view.findViewById(R.id.vallocation);
 
-            mImageView.setImageResource(images[position]);
+            mImageView.setImageResource(R.drawable.food);
             dishname.setText(dish[position]);
             priceval.setText(price[position]);
             quantityval.setText(String.valueOf(quantity[position]));

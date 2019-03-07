@@ -19,11 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BuyView" />
-        <activity android:name=".SellView" />
-        <activity android:name=".new_order_sell" />
-        <activity android:name=".activity_register" />
-        <activity android:name=".activity_login" />
+        <activity android:name=".BuyView"></activity>
+        <activity android:name=".SellView"></activity>
+        <activity android:name=".new_order_sell"></activity>
+        <activity android:name=".activity_register"></activity>
+        <activity android:name=".activity_login"></activity>
+        <activity android:name=".show_data_sell"></activity>
+        
     </application>
 
 </manifest>
