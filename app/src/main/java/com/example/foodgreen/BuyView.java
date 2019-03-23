@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -151,6 +152,8 @@ public class BuyView extends AppCompatActivity {
             }
         });
 
+
+
         FirebaseDatabase firebaseDatabase;
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
@@ -186,6 +189,19 @@ public class BuyView extends AppCompatActivity {
                 CustomListView customListView=new CustomListView();
                 food.setAdapter(customListView);
                 customListView.notifyDataSetChanged();
+
+                // onclick event of item in listview
+
+                food.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent confirm_buy = new Intent(view.getContext(), confirm_order_buyer.class);
+                        startActivity(confirm_buy);
+
+                    }
+                });
+
             }
 
             @Override

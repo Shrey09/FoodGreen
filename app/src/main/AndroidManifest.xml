@@ -25,7 +25,9 @@
         <activity android:name=".activity_register"></activity>
         <activity android:name=".activity_login"></activity>
         <activity android:name=".show_data_sell"></activity>
-        
+        <activity android:name=".confirm_order_buyer"></activity>
+        <activity android:name=".bid_sell"></activity>
+
     </application>
 
 </manifest>

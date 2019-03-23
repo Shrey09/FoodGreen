@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -186,6 +187,17 @@ public class SellView extends AppCompatActivity {
                 CustomListView customListView=new CustomListView();
                 food.setAdapter(customListView);
                 customListView.notifyDataSetChanged();
+                // onclick event of item in listview
+
+                food.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent confirm_bid = new Intent(view.getContext(), bid_sell.class);
+                        startActivity(confirm_bid);
+
+                    }
+                });
             }
 
             @Override
