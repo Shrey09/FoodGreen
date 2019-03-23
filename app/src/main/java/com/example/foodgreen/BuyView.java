@@ -40,12 +40,9 @@ public class BuyView extends AppCompatActivity {
     ArrayList<String> quantity_array = new ArrayList<String>();
     ArrayList<String> location_array = new ArrayList<String>();
     ArrayList<String> images_array = new ArrayList<String>();
+    ArrayList<String> key_array = new ArrayList<String>();   // To store parent key values
     String[] dish, price, quantity, location, images;
-    //String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
-    //String [] price={"22","23","24","25","22","23","24","25"};
-    //Integer [] quantity={2,3,4,5,2,3,4,5};
-    //String [] location={"qunipool","spring","sexton"};
-    //Integer[] images={R.drawable.food,R.drawable.food2,R.drawable.food2};
+
     android.support.v7.widget.Toolbar toolbar;
     ImageView homeButton, sellButton, neworderbutton, filter;
     Spinner foodcategory;
@@ -169,6 +166,7 @@ public class BuyView extends AppCompatActivity {
                     quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
                     location_array.add("Dalhousie University");
                     images_array.add("R.drawable.food");
+                    key_array.add(ds.getKey().toString());
                 }
 
                 int count;
@@ -197,6 +195,7 @@ public class BuyView extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent confirm_buy = new Intent(view.getContext(), confirm_order_buyer.class);
+                        confirm_buy.putExtra("parent_value", key_array.get(position));
                         startActivity(confirm_buy);
 
                     }
