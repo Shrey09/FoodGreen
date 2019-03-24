@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class confirm_order_buyer extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class confirm_order_buyer extends AppCompatActivity {
     ImageView homeButton, sellButton;
     ImageView dishimage;
     Button buy;
+    String image_name;
     String buyercontactNo,sellercontactNo;
     String buyermessage,sellermessage;
     TextView show_dish_name, show_cook_date, show_cook_time, show_expire_date, show_expire_time, show_dish_description,
@@ -76,6 +78,8 @@ public class confirm_order_buyer extends AppCompatActivity {
                 show_dish_description.setText(dataSnapshot.child("data_dish_description").getValue(String.class));
                 show_dish_price.setText(dataSnapshot.child("data_dish_price").getValue(String.class));
                 show_dish_quantity.setText(dataSnapshot.child("data_dish_quantity").getValue(String.class));
+                image_name = dataSnapshot.child("image_name").getValue(String.class);
+                Picasso.get().load("http://foodgreen.000webhostapp.com/images/" + image_name).into(dishimage);
             }
 
             @Override
