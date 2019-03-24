@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -164,8 +165,8 @@ public class BuyView extends AppCompatActivity {
                     dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
                     price_array.add(ds.child("data_dish_price").getValue(String.class));
                     quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                    images_array.add(ds.child("image_name").getValue(String.class));
                     location_array.add("Dalhousie University");
-                    images_array.add("R.drawable.food");
                     key_array.add(ds.getKey().toString());
                 }
 
@@ -182,7 +183,7 @@ public class BuyView extends AppCompatActivity {
                     price[count] = price_array.get(count);
                     quantity[count] = quantity_array.get(count);
                     location[count] = location_array.get(count);
-                    //images[count] = images_array.get(count);
+                    images[count] = images_array.get(count);
                 }
                 CustomListView customListView=new CustomListView();
                 food.setAdapter(customListView);
@@ -252,7 +253,7 @@ public class BuyView extends AppCompatActivity {
             TextView  quantityval=(TextView) view.findViewById(R.id.valquantity);
             TextView  locationval=(TextView) view.findViewById(R.id.vallocation);
 
-            mImageView.setImageResource(R.drawable.food);
+            Picasso.get().load("http://foodgreen.000webhostapp.com/images/" + images[position]).into(mImageView);
             dishname.setText(dish[position]);
             priceval.setText(price[position]);
             quantityval.setText(String.valueOf(quantity[position]));
