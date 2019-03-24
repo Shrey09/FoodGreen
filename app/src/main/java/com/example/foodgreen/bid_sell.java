@@ -47,6 +47,8 @@ public class bid_sell extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sell_bid);
+        toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
+        setSupportActionBar(toolbar);
         name=(TextView)findViewById(R.id.buyerrname);
         contact=(TextView)findViewById(R.id.buyerrcontact);
         address=(TextView)findViewById(R.id.buyeraddress);

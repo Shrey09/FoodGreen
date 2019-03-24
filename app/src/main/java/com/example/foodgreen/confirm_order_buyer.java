@@ -45,6 +45,8 @@ public class confirm_order_buyer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order_confim_buyer);
+        toolbar=(android.support.v7.widget.Toolbar) findViewById(R.id.new_bar);
+        setSupportActionBar(toolbar);
         name=(TextView)findViewById(R.id.sellername);
         contact=(TextView)findViewById(R.id.sellercontact);
         address=(TextView)findViewById(R.id.selleraddress);
@@ -70,7 +72,7 @@ public class confirm_order_buyer extends AppCompatActivity {
                 show_cook_date.setText(dataSnapshot.child("data_cook_date").getValue(String.class));
                 show_cook_time.setText(dataSnapshot.child("data_cook_time").getValue(String.class));
                 show_expire_date.setText(dataSnapshot.child("data_expire_date").getValue(String.class));
-                show_expire_time.setText(dataSnapshot.child("date_expire_time").getValue(String.class));
+                show_expire_time.setText(dataSnapshot.child("data_expire_time").getValue(String.class));
                 show_dish_description.setText(dataSnapshot.child("data_dish_description").getValue(String.class));
                 show_dish_price.setText(dataSnapshot.child("data_dish_price").getValue(String.class));
                 show_dish_quantity.setText(dataSnapshot.child("data_dish_quantity").getValue(String.class));
