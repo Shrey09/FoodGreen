@@ -7,6 +7,15 @@
     android:background="@drawable/food2"
     tools:context=".MainActivity">
 
+    <View
+        android:id="@+id/blurimage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:layout_alignParentBottom="true"
+        android:alpha="0.5">
+    </View>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/new_bar"
         android:layout_width="match_parent"
@@ -16,8 +25,36 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/fg"/>
+        <TextView
+            android:id="@+id/hometext"
+            android:layout_width="300dp"
+
+            android:text="Create your own virtual kitchen"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff" />
+        <Button
+            android:layout_marginTop="20dp"
+            android:id="@+id/myorders"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:text="My Orders"/>
 
     </LinearLayout>
 
