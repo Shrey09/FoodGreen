@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,15 +19,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class bid_sell extends AppCompatActivity {
     TextView name,contact,address;
     ImageView homebutton, buybutton;
     EditText bidvalue;
     Button bid;
+    String parent_key;   // To store intent value which is parent value
     String buyercontactNo,sellercontactNo;
     String buyermessage,sellermessage;
     android.support.v7.widget.Toolbar toolbar;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =1 ;
+
+    TextView show_dish_name, show_description, show_expected_time, show_expected_date, show_quantity;  // textviews to show data
+    String data_dish_name, data_description, data_expected_date, data_expected_time, data_quantity;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference buy_data_open_ref = root_ref.child("buy_data_open");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +52,35 @@ public class bid_sell extends AppCompatActivity {
         address=(TextView)findViewById(R.id.buyeraddress);
         bidvalue=(EditText)findViewById(R.id.etbid);
         bid=(Button) findViewById(R.id.bidbutton);
+        show_dish_name = findViewById(R.id.dishname);
+        show_description = findViewById(R.id.orderdescription);
+        show_expected_time = findViewById(R.id.expectedtime);
+        show_expected_date = findViewById(R.id.expecteddate);
+        show_quantity = findViewById(R.id.quantity);
+
+        Intent intent = getIntent();
+        parent_key = intent.getStringExtra("parent_value");
+        DatabaseReference get_order_data_ref = buy_data_open_ref.child(parent_key);
+        get_order_data_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                data_dish_name = dataSnapshot.child("data_dish_name").getValue(String.class);
+                data_description = dataSnapshot.child("data_description").getValue(String.class);
+                data_expected_time = dataSnapshot.child("data_expected_time").getValue(String.class);
+                data_expected_date = dataSnapshot.child("data_expected_date").getValue(String.class);
+                data_quantity = dataSnapshot.child("data_quantity").getValue(String.class);
+                show_dish_name.setText(data_dish_name);
+                show_description.setText(data_description);
+                show_expected_time.setText(data_expected_time);
+                show_expected_date.setText(data_expected_date);
+                show_quantity.setText(data_quantity);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         homebutton = findViewById(R.id.homebtn);
         homebutton.setOnClickListener(new View.OnClickListener() {

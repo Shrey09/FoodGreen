@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,7 @@ public class SellView extends AppCompatActivity {
     ArrayList<String> quantity_array = new ArrayList<String>();
     ArrayList<String> time_array = new ArrayList<String>();
     ArrayList<String> date_array = new ArrayList<String>();
+    ArrayList<String> key_array = new ArrayList<String>();   // to store parent value. It will be passed with Intent
     String[] dish, quantity, location, time, date;
 
     //String[] dish={"first","Second","Third","Fourth","first","Second","Third","Fourth"};
@@ -168,6 +170,8 @@ public class SellView extends AppCompatActivity {
                     time_array.add(ds.child("data_expected_time").getValue(String.class));
                     date_array.add(ds.child("data_expected_date").getValue(String.class));
                     location_array.add("Dalhousie University");
+                    key_array.add(ds.getKey().toString());
+                    //Log.i("Key value: ", ds.getKey().toString());   // To get parent value
                 }
 
                 int count;
@@ -194,6 +198,7 @@ public class SellView extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent confirm_bid = new Intent(view.getContext(), bid_sell.class);
+                        confirm_bid.putExtra("parent_value", key_array.get(position));
                         startActivity(confirm_bid);
 
                     }
