@@ -37,8 +37,8 @@ public class bid_sell extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =1 ;
 
-    TextView show_dish_name, show_description, show_expected_time, show_expected_date, show_quantity;  // textviews to show data
-    String data_dish_name, data_description, data_expected_date, data_expected_time, data_quantity;
+    TextView show_dish_name, show_description, show_expected_time, show_expected_date, show_quantity, show_food_category;  // textviews to show data
+    String data_dish_name, data_description, data_expected_date, data_expected_time, data_quantity, data_food_category;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
@@ -59,6 +59,7 @@ public class bid_sell extends AppCompatActivity {
         show_expected_time = findViewById(R.id.expectedtime);
         show_expected_date = findViewById(R.id.expecteddate);
         show_quantity = findViewById(R.id.quantity);
+        show_food_category = findViewById(R.id.food_category);
 
         Intent intent = getIntent();
         parent_key = intent.getStringExtra("parent_value");
@@ -71,11 +72,13 @@ public class bid_sell extends AppCompatActivity {
                 data_expected_time = dataSnapshot.child("data_expected_time").getValue(String.class);
                 data_expected_date = dataSnapshot.child("data_expected_date").getValue(String.class);
                 data_quantity = dataSnapshot.child("data_quantity").getValue(String.class);
+                data_food_category = dataSnapshot.child("food_category").getValue(String.class);
                 show_dish_name.setText(data_dish_name);
                 show_description.setText(data_description);
                 show_expected_time.setText(data_expected_time);
                 show_expected_date.setText(data_expected_date);
                 show_quantity.setText(data_quantity);
+                show_food_category.setText(data_food_category);
             }
 
             @Override
