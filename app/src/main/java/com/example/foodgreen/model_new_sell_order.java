@@ -10,6 +10,24 @@ public class model_new_sell_order {
     private String data_cook_date;
     private String data_expire_time;
     private String data_expire_date;
+    private String image_name;
+    private String food_category;
+
+    public String getFood_category() {
+        return food_category;
+    }
+
+    public void setFood_category(String food_category) {
+        this.food_category = food_category;
+    }
+
+    public String getImage_name() {
+        return image_name;
+    }
+
+    public void setImage_name(String image_name) {
+        this.image_name = image_name;
+    }
 
     public String getId() {
         return id;
@@ -83,7 +101,7 @@ public class model_new_sell_order {
         this.data_expire_date = data_expire_date;
     }
 
-    public model_new_sell_order(String data_dish_name, String data_dish_price, String data_dish_quantity, String data_dish_description, String data_cook_time, String data_cook_date, String data_expire_time, String data_expire_date){
+    public model_new_sell_order(String data_dish_name, String data_dish_price, String data_dish_quantity, String data_dish_description, String data_cook_time, String data_cook_date, String data_expire_time, String data_expire_date, String image_name, String food_category){
         this.data_dish_name = data_dish_name;
         this.data_dish_price = data_dish_price;
         this.data_dish_quantity = data_dish_quantity;
@@ -92,5 +110,7 @@ public class model_new_sell_order {
         this.data_cook_date = data_cook_date;
         this.data_expire_time = data_expire_time;
         this.data_expire_date = data_expire_date;
+        this.image_name = image_name;
+        this.food_category = food_category;
     }
 }

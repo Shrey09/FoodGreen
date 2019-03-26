@@ -37,7 +37,8 @@
                 android:fontFamily="@string/fontfamily"
                 android:hint="Enter Dish Name"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:id="@+id/enter_price"
@@ -51,7 +52,8 @@
                 android:hint="Enter The Price"
                 android:inputType="numberDecimal"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:id="@+id/enter_quantity"
@@ -64,7 +66,8 @@
                 android:fontFamily="@string/fontfamily"
                 android:hint="Enter Quantity"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:id="@+id/enter_description"
@@ -79,8 +82,41 @@
                 android:hint="Enter Description"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18dp"
+                android:text="Select food category"/>
+
+            <Spinner
+                android:id="@+id/food_categories_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp" />
+
+            <EditText
+                android:id="@+id/new_food_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/custom_text"
+                android:ems="10"
+                android:fontFamily="@string/fontfamily"
+                android:hint="Enter new category"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -108,7 +144,8 @@
                         android:id="@+id/sell_cook_date"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:textCursorDrawable="@null"/>
 
                     <Button
                         android:id="@+id/btn_cooked_date"
@@ -125,7 +162,8 @@
                         android:id="@+id/sell_cook_time"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:textCursorDrawable="@null"/>
 
                     <Button
                         android:id="@+id/btn_cooked_time"
@@ -160,7 +198,8 @@
                             android:id="@+id/sell_expire_date"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp" />
+                            android:layout_marginStart="10dp"
+                            android:textCursorDrawable="@null"/>
 
                         <Button
                             android:id="@+id/btn_expire_date"
@@ -177,7 +216,8 @@
                             android:id="@+id/sell_expire_time"
                             android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp" />
+                            android:layout_marginStart="10dp"
+                            android:textCursorDrawable="@null"/>
 
                         <Button
                             android:id="@+id/btn_expire_time"

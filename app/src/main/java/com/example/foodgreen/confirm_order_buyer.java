@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class confirm_order_buyer extends AppCompatActivity {
 
@@ -31,10 +32,11 @@ public class confirm_order_buyer extends AppCompatActivity {
     ImageView homeButton, sellButton;
     ImageView dishimage;
     Button buy;
+    String image_name;
     String buyercontactNo,sellercontactNo;
     String buyermessage,sellermessage;
     TextView show_dish_name, show_cook_date, show_cook_time, show_expire_date, show_expire_time, show_dish_description,
-        show_dish_price, show_dish_quantity;   // To show values in textview
+        show_dish_price, show_dish_quantity, show_food_category;   // To show values in textview
     String parent_value;   // To store intent's passed data
     android.support.v7.widget.Toolbar toolbar;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =1 ;
@@ -60,7 +62,7 @@ public class confirm_order_buyer extends AppCompatActivity {
         show_dish_description = findViewById(R.id.orderdescription);
         show_dish_price = findViewById(R.id.show_price);
         show_dish_quantity = findViewById(R.id.show_quantity);
-
+        show_food_category = findViewById(R.id.food_category);
 
         Intent intent = getIntent();
         parent_value = intent.getStringExtra("parent_value");
@@ -76,6 +78,9 @@ public class confirm_order_buyer extends AppCompatActivity {
                 show_dish_description.setText(dataSnapshot.child("data_dish_description").getValue(String.class));
                 show_dish_price.setText(dataSnapshot.child("data_dish_price").getValue(String.class));
                 show_dish_quantity.setText(dataSnapshot.child("data_dish_quantity").getValue(String.class));
+                show_food_category.setText(dataSnapshot.child("food_category").getValue(String.class));
+                image_name = dataSnapshot.child("image_name").getValue(String.class);
+                Picasso.get().load("http://foodgreen.000webhostapp.com/images/" + image_name).into(dishimage);
             }
 
             @Override
