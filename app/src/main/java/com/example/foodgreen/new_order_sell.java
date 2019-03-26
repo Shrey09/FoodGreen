@@ -12,30 +12,40 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.UUID;
 
 public class new_order_sell extends AppCompatActivity implements View.OnClickListener{
@@ -44,13 +54,19 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     Button btn_cooked_date, btn_cooked_time, btn_expire_date,btn_expire_time;
     EditText sell_cook_date, sell_cook_time, sell_expire_date, sell_expire_time;
     EditText dish_name, dish_quantity, dish_description;
-    EditText dish_price;
+    EditText dish_price, new_food_category;
     Button submit_order;
+    List<String> food_categories = new ArrayList<String>();
     int ExpireHour,ExpireMinute,btnCookedYear,btnCookedDay,btnCookedMonth,btnExpireYear,btnExpireMonth,btnExpireDay,CookHour,CookMinute;
     String data_dish_name, data_price, data_quantity, data_description, data_cook_date, data_cook_time, data_expire_date, data_expire_time;
     Button capureimg;
     ImageView imageView;
     Integer REQUEST_CAMERA = 1, SELECT_FILE = 0;
+    public Spinner food_categories_spinner;   // food category spinner
+    Long count;   // to save number of food categories in database
+    ArrayAdapter<String> food_categories_adapter;   // adapter for spinner
+    String food_category_choice = "ENTER NEW CATEGORY";   // the selected category
+    String food_category_key;   // to store child key from firebase
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -60,6 +76,8 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     private Uri filePath;
     String image_name, image_extension;
     private static final String UPLOAD_URL = "http://foodgreen.000webhostapp.com/upload_image.php";
+    DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference food_categories_ref = root_ref.child("food_categories");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +90,62 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
 
+        // fetch categories from database
+        food_categories_ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds: dataSnapshot.getChildren()){
+                    food_category_key = ds.getKey().toString();
+                    Log.i("KEY: ", ds.getKey().toString());
+                    Log.i("CHILDREN COUNT: ", String.valueOf(ds.getChildrenCount()));
+                    count = ds.getChildrenCount();
+                    for (long i=0; i<count; i++) {
+                        Log.i("Category: ", ds.child(String.valueOf(i)).getValue(String.class));
+                        food_categories.add(ds.child(String.valueOf(i)).getValue(String.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
 
+        // Assign views
+        food_categories.add("ENTER NEW CATEGORY");
         dish_name = findViewById(R.id.enter_dishname);
         dish_quantity = findViewById(R.id.enter_quantity);
         dish_description = findViewById(R.id.enter_description);
         dish_price = findViewById(R.id.enter_price);
         submit_order = findViewById(R.id.submit_button);
+        new_food_category = findViewById(R.id.new_food_category);
+        new_food_category.setVisibility(View.INVISIBLE);   // initially, set edittext as invisible
+        food_categories_spinner = (Spinner) findViewById(R.id.food_categories_spinner);
+        food_categories_adapter = new ArrayAdapter<String>(new_order_sell.this, android.R.layout.simple_spinner_item, food_categories);
+        food_categories_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        food_categories_spinner.setAdapter(food_categories_adapter);
+        food_categories_adapter.notifyDataSetChanged();
+        food_categories_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                food_category_choice = food_categories_spinner.getItemAtPosition(position).toString();
+                Log.i("TAG: ", "INSIDE LISTENER");
+                Log.i("CHOICE: ", food_categories_spinner.getSelectedItem().toString());
+                if (food_category_choice.equals("ENTER NEW CATEGORY")){
+                    new_food_category.setVisibility(View.VISIBLE);
+                } else {
+                    new_food_category.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         btn_cooked_date = findViewById(R.id.btn_cooked_date);
         btn_cooked_time = findViewById(R.id.btn_cooked_time);
@@ -236,6 +303,18 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     }
 
     public void submit_data(){
+        if (food_category_choice.equals("ENTER NEW CATEGORY") && new_food_category.getText().toString().equals("")){
+            Toast.makeText(getApplicationContext(), "Please enter new food category or select from drop down", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (food_category_choice.equals("ENTER NEW CATEGORY") && !new_food_category.getText().toString().equals("")){
+            food_category_choice = new_food_category.getText().toString();
+
+            // New category needs to be added in firebase
+            DatabaseReference update_food_category = FirebaseDatabase.getInstance().getReference("food_categories").child(food_category_key);
+            update_food_category.child(String.valueOf(count)).setValue(food_category_choice);
+        }
+
         data_dish_name = dish_name.getText().toString();
         data_price = dish_price.getText().toString();
         data_quantity = dish_quantity.getText().toString();
@@ -250,7 +329,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         //Log.i("flag 2", "flag 2");
         image_name = databaseReference.child("sell_data_open").push().getKey();
         uploadImage();
-        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension);
+        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension, food_category_choice);
         databaseReference.child("sell_data_open").push().setValue(model);
         //Log.i("flag 3", "flag 3");
         Toast.makeText(getApplicationContext(), "Order submitted", Toast.LENGTH_SHORT).show();

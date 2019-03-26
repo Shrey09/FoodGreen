@@ -120,7 +120,7 @@ public class BuyView extends AppCompatActivity {
                 });
                 ArrayAdapter<String> adapter=new ArrayAdapter<String>(BuyView.this
                         ,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.foodmenu));
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 foodcategory.setAdapter(adapter);
 
                 okButton.setOnClickListener(new View.OnClickListener() {
