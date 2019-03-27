@@ -2,6 +2,7 @@ package com.example.foodgreen;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -37,6 +38,8 @@ public class bid_sell extends AppCompatActivity {
     android.support.v7.widget.Toolbar toolbar;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =1 ;
 
+    SharedPreferences sp;
+    String user_data_email, user_data_password, user_data_phonenum, user_data_username;
     TextView show_dish_name, show_description, show_expected_time, show_expected_date, show_quantity, show_food_category;  // textviews to show data
     String data_dish_name, data_description, data_expected_date, data_expected_time, data_quantity, data_food_category;
     FirebaseDatabase firebaseDatabase;
@@ -61,6 +64,20 @@ public class bid_sell extends AppCompatActivity {
         show_quantity = findViewById(R.id.quantity);
         show_food_category = findViewById(R.id.food_category);
 
+        // If user is not logged in, redirect user to login
+        sp = getSharedPreferences("user_data", MODE_PRIVATE);
+        if (!sp.contains("LOGGED_IN")){
+            Toast.makeText(bid_sell.this, "Please log in to make order", Toast.LENGTH_SHORT).show();
+            Intent redirect = new Intent(bid_sell.this, activity_login.class);
+            startActivity(redirect);
+        }
+        else {
+            user_data_email = sp.getString("email", "");
+            user_data_password = sp.getString("password", "");
+            user_data_phonenum = sp.getString("phonenum", "");
+            user_data_username = sp.getString("username", "");
+        }
+
         Intent intent = getIntent();
         parent_key = intent.getStringExtra("parent_value");
         DatabaseReference get_order_data_ref = buy_data_open_ref.child(parent_key);
@@ -79,6 +96,8 @@ public class bid_sell extends AppCompatActivity {
                 show_expected_date.setText(data_expected_date);
                 show_quantity.setText(data_quantity);
                 show_food_category.setText(data_food_category);
+                name.setText(user_data_username);
+                contact.setText(user_data_phonenum);
             }
 
             @Override

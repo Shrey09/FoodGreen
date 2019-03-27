@@ -1,6 +1,7 @@
 package com.example.foodgreen;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +19,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class activity_login extends AppCompatActivity implements View.OnClickListener{
     android.support.v7.widget.Toolbar toolbar;
@@ -26,10 +31,14 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
     private TextView create_acc, forgot_pass;
     private Button btnLogin;
     private EditText Email, Password;
-    private String email;
+    public String email;
     private String password;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseAuth mAuth_data_fetch = FirebaseAuth.getInstance();
+    DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+    SharedPreferences sp;   // to store user data locally which will be used in whole app
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +118,7 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
         email = Email.getText().toString();
         password = Password.getText().toString();
         Log.d(TAG, "signIn:" + email);
+        final String finalEmail = email;
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -123,6 +133,39 @@ public class activity_login extends AppCompatActivity implements View.OnClickLis
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
+                            Toast.makeText(activity_login.this, "Login successful", Toast.LENGTH_SHORT).show();
+                            sp = getSharedPreferences("user_data", MODE_PRIVATE);
+
+                            root_ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot ds: dataSnapshot.getChildren()){
+                                        Log.i("CHILD: ", String.valueOf(ds.getChildrenCount()));
+
+
+                                        try{
+                                            if (ds.child("email").getValue().toString().equals(finalEmail)){
+                                                sp.edit().putBoolean("LOGGED_IN", true).apply();
+                                                sp.edit().putString("email", finalEmail).apply();
+                                                sp.edit().putString("password", ds.child("password").getValue().toString()).apply();
+                                                sp.edit().putString("phonenum", ds.child("phonenum").getValue().toString()).apply();
+                                                sp.edit().putString("username", ds.child("username").getValue().toString()).apply();
+                                                //Log.i("PASSWORD: ", ds.child("password").getValue().toString());
+                                                break;
+                                            }
+                                        } catch (Exception e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivity(intent);
                         }

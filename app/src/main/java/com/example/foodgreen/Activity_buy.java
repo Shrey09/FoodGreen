@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,8 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
     String data_dish_name, data_quantity, data_description, data_expected_time, data_expected_date;
     Button submit_order;
 
+    SharedPreferences sp;
+
     public Spinner food_categories_spinner;   // food category spinner
     Long count;   // to save number of food categories in database
     ArrayAdapter<String> food_categories_adapter;   // adapter for spinner
@@ -47,6 +50,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
     String food_category_key;   // to store child key from firebase
     List<String> food_categories = new ArrayList<String>();
 
+    String user_data_email, user_data_password, user_data_phonenum, user_data_username;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
@@ -64,6 +68,20 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
+
+        // If user is not logged in, redirect user to login
+        sp = getSharedPreferences("user_data", MODE_PRIVATE);
+        if (!sp.contains("LOGGED_IN")){
+            Toast.makeText(Activity_buy.this, "Please log in to make order", Toast.LENGTH_SHORT).show();
+            Intent redirect = new Intent(Activity_buy.this, activity_login.class);
+            startActivity(redirect);
+        }
+        else {
+            user_data_email = sp.getString("email", "");
+            user_data_password = sp.getString("password", "");
+            user_data_phonenum = sp.getString("phonenum", "");
+            user_data_username = sp.getString("username", "");
+        }
 
         // fetch categories from database
         food_categories_ref.addValueEventListener(new ValueEventListener() {
@@ -203,7 +221,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         data_expected_date = buy_expected_date.getText().toString();
 
         // save into model
-        model_activity_buy model = new model_activity_buy(data_dish_name, data_quantity, data_description, data_expected_time, data_expected_date, food_category_choice);
+        model_activity_buy model = new model_activity_buy(data_dish_name, data_quantity, data_description, data_expected_time, data_expected_date, food_category_choice, user_data_email);
 
         // create userId
         FirebaseUser userId = mAuth.getCurrentUser();
