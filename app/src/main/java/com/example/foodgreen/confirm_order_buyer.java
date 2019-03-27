@@ -3,6 +3,7 @@ package com.example.foodgreen;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
@@ -32,6 +33,10 @@ public class confirm_order_buyer extends AppCompatActivity {
     ImageView homeButton, sellButton;
     ImageView dishimage;
     Button buy;
+
+    SharedPreferences sp;
+    String user_data_email, user_data_password, user_data_phonenum, user_data_username;
+
     String image_name;
     String buyercontactNo,sellercontactNo;
     String buyermessage,sellermessage;
@@ -64,6 +69,20 @@ public class confirm_order_buyer extends AppCompatActivity {
         show_dish_quantity = findViewById(R.id.show_quantity);
         show_food_category = findViewById(R.id.food_category);
 
+        // If user is not logged in, redirect user to login
+        sp = getSharedPreferences("user_data", MODE_PRIVATE);
+        if (!sp.contains("LOGGED_IN")){
+            Toast.makeText(confirm_order_buyer.this, "Please log in to make order", Toast.LENGTH_SHORT).show();
+            Intent redirect = new Intent(confirm_order_buyer.this, activity_login.class);
+            startActivity(redirect);
+        }
+        else {
+            user_data_email = sp.getString("email", "");
+            user_data_password = sp.getString("password", "");
+            user_data_phonenum = sp.getString("phonenum", "");
+            user_data_username = sp.getString("username", "");
+        }
+
         Intent intent = getIntent();
         parent_value = intent.getStringExtra("parent_value");
         DatabaseReference get_order_data_ref = sell_data_ref.child(parent_value);
@@ -81,6 +100,8 @@ public class confirm_order_buyer extends AppCompatActivity {
                 show_food_category.setText(dataSnapshot.child("food_category").getValue(String.class));
                 image_name = dataSnapshot.child("image_name").getValue(String.class);
                 Picasso.get().load("http://foodgreen.000webhostapp.com/images/" + image_name).into(dishimage);
+                contact.setText(user_data_phonenum);
+                name.setText(user_data_username);
             }
 
             @Override

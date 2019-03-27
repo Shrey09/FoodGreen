@@ -8,6 +8,15 @@ public class model_activity_buy {
     private String data_expected_time;
     private String data_expected_date;
     private String food_category;
+    private String user_data_email;
+
+    public String getUser_data_email() {
+        return user_data_email;
+    }
+
+    public void setUser_data_email(String user_data_email) {
+        this.user_data_email = user_data_email;
+    }
 
     public String getFood_category() {
         return food_category;
@@ -65,12 +74,13 @@ public class model_activity_buy {
         this.data_expected_date = data_expected_date;
     }
 
-    public model_activity_buy(String data_dish_name, String data_quantity, String data_description, String data_expected_time, String data_expected_date, String food_category){
+    public model_activity_buy(String data_dish_name, String data_quantity, String data_description, String data_expected_time, String data_expected_date, String food_category, String user_data_email){
         this.data_dish_name = data_dish_name;
         this.data_quantity = data_quantity;
         this.data_description = data_description;
         this.data_expected_time = data_expected_time;
         this.data_expected_date = data_expected_date;
         this.food_category = food_category;
+        this.user_data_email = user_data_email;
     }
 }

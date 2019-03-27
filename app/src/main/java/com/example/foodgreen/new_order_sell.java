@@ -7,6 +7,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -61,6 +62,8 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     String data_dish_name, data_price, data_quantity, data_description, data_cook_date, data_cook_time, data_expire_date, data_expire_time;
     Button capureimg;
     ImageView imageView;
+    SharedPreferences sp;
+
     Integer REQUEST_CAMERA = 1, SELECT_FILE = 0;
     public Spinner food_categories_spinner;   // food category spinner
     Long count;   // to save number of food categories in database
@@ -72,6 +75,8 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     private boolean isUserAuth;
+
+    String user_data_email, user_data_password, user_data_phonenum, user_data_username;
 
     private Uri filePath;
     String image_name, image_extension;
@@ -89,6 +94,20 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
+
+        // If user is not logged in, force user to log in
+        sp = getSharedPreferences("user_data", MODE_PRIVATE);
+        if (!sp.contains("LOGGED_IN")){
+            Toast.makeText(new_order_sell.this, "Please log in to make order", Toast.LENGTH_SHORT).show();
+            Intent redirect = new Intent(new_order_sell.this, activity_login.class);
+            startActivity(redirect);
+        }
+        else {
+            user_data_email = sp.getString("email", "");
+            user_data_password = sp.getString("password", "");
+            user_data_phonenum = sp.getString("phonenum", "");
+            user_data_username = sp.getString("username", "");
+        }
 
         // fetch categories from database
         food_categories_ref.addValueEventListener(new ValueEventListener() {
@@ -329,7 +348,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         //Log.i("flag 2", "flag 2");
         image_name = databaseReference.child("sell_data_open").push().getKey();
         uploadImage();
-        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension, food_category_choice);
+        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension, food_category_choice, user_data_email);
         databaseReference.child("sell_data_open").push().setValue(model);
         //Log.i("flag 3", "flag 3");
         Toast.makeText(getApplicationContext(), "Order submitted", Toast.LENGTH_SHORT).show();

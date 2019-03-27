@@ -12,6 +12,15 @@ public class model_new_sell_order {
     private String data_expire_date;
     private String image_name;
     private String food_category;
+    private String user_data_email;
+
+    public String getUser_data_email() {
+        return user_data_email;
+    }
+
+    public void setUser_data_email(String user_data_email) {
+        this.user_data_email = user_data_email;
+    }
 
     public String getFood_category() {
         return food_category;
@@ -101,7 +110,7 @@ public class model_new_sell_order {
         this.data_expire_date = data_expire_date;
     }
 
-    public model_new_sell_order(String data_dish_name, String data_dish_price, String data_dish_quantity, String data_dish_description, String data_cook_time, String data_cook_date, String data_expire_time, String data_expire_date, String image_name, String food_category){
+    public model_new_sell_order(String data_dish_name, String data_dish_price, String data_dish_quantity, String data_dish_description, String data_cook_time, String data_cook_date, String data_expire_time, String data_expire_date, String image_name, String food_category, String user_data_email){
         this.data_dish_name = data_dish_name;
         this.data_dish_price = data_dish_price;
         this.data_dish_quantity = data_dish_quantity;
@@ -112,5 +121,6 @@ public class model_new_sell_order {
         this.data_expire_date = data_expire_date;
         this.image_name = image_name;
         this.food_category = food_category;
+        this.user_data_email = user_data_email;
     }
 }
