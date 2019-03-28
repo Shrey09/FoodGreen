@@ -348,7 +348,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         //Log.i("flag 2", "flag 2");
         image_name = databaseReference.child("sell_data_open").push().getKey();
         uploadImage();
-        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension, food_category_choice, user_data_email);
+        model_new_sell_order model = new model_new_sell_order(data_dish_name, data_price, data_quantity, data_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name + "." + image_extension, food_category_choice, user_data_email, user_data_phonenum, user_data_username);
         databaseReference.child("sell_data_open").push().setValue(model);
         //Log.i("flag 3", "flag 3");
         Toast.makeText(getApplicationContext(), "Order submitted", Toast.LENGTH_SHORT).show();

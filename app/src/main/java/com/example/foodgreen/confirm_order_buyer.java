@@ -40,11 +40,14 @@ public class confirm_order_buyer extends AppCompatActivity {
     String image_name;
     String buyercontactNo,sellercontactNo;
     String buyermessage,sellermessage;
+    String data_dish_name, data_cook_date, data_cook_time, data_expire_date, data_expire_time, data_dish_description,
+        data_dish_price, data_dish_quantity, data_food_category, data_seller_email, data_seller_phonenum, data_seller_username;
     TextView show_dish_name, show_cook_date, show_cook_time, show_expire_date, show_expire_time, show_dish_description,
         show_dish_price, show_dish_quantity, show_food_category;   // To show values in textview
     String parent_value;   // To store intent's passed data
     android.support.v7.widget.Toolbar toolbar;
     private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =1 ;
+    private DatabaseReference databaseReference;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
     DatabaseReference sell_data_ref = root_ref.child("sell_data_open");
@@ -89,19 +92,31 @@ public class confirm_order_buyer extends AppCompatActivity {
         get_order_data_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                show_dish_name.setText(dataSnapshot.child("data_dish_name").getValue(String.class));
-                show_cook_date.setText(dataSnapshot.child("data_cook_date").getValue(String.class));
-                show_cook_time.setText(dataSnapshot.child("data_cook_time").getValue(String.class));
-                show_expire_date.setText(dataSnapshot.child("data_expire_date").getValue(String.class));
-                show_expire_time.setText(dataSnapshot.child("data_expire_time").getValue(String.class));
-                show_dish_description.setText(dataSnapshot.child("data_dish_description").getValue(String.class));
-                show_dish_price.setText(dataSnapshot.child("data_dish_price").getValue(String.class));
-                show_dish_quantity.setText(dataSnapshot.child("data_dish_quantity").getValue(String.class));
-                show_food_category.setText(dataSnapshot.child("food_category").getValue(String.class));
+                data_dish_name = dataSnapshot.child("data_dish_name").getValue(String.class);
+                data_cook_date = dataSnapshot.child("data_cook_date").getValue(String.class);
+                data_cook_time = dataSnapshot.child("data_cook_time").getValue(String.class);
+                data_expire_date = dataSnapshot.child("data_expire_date").getValue(String.class);
+                data_expire_time = dataSnapshot.child("data_expire_time").getValue(String.class);
+                data_dish_description = dataSnapshot.child("data_dish_description").getValue(String.class);
+                data_dish_price = dataSnapshot.child("data_dish_price").getValue(String.class);
+                data_dish_quantity = dataSnapshot.child("data_dish_quantity").getValue(String.class);
+                data_food_category = dataSnapshot.child("food_category").getValue(String.class);
+                data_seller_email = dataSnapshot.child("user_data_email").getValue(String.class);
+                data_seller_phonenum = dataSnapshot.child("user_data_phonenum").getValue(String.class);
+                data_seller_username = dataSnapshot.child("user_data_username").getValue(String.class);
+                show_dish_name.setText(data_dish_name);
+                show_cook_date.setText(data_cook_date);
+                show_cook_time.setText(data_cook_time);
+                show_expire_date.setText(data_expire_date);
+                show_expire_time.setText(data_expire_time);
+                show_dish_description.setText(data_dish_description);
+                show_dish_price.setText(data_dish_price);
+                show_dish_quantity.setText(data_dish_quantity);
+                show_food_category.setText(data_food_category);
                 image_name = dataSnapshot.child("image_name").getValue(String.class);
                 Picasso.get().load("http://foodgreen.000webhostapp.com/images/" + image_name).into(dishimage);
-                contact.setText(user_data_phonenum);
-                name.setText(user_data_username);
+                contact.setText(data_seller_phonenum);
+                name.setText(data_seller_username);
             }
 
             @Override
@@ -132,6 +147,11 @@ public class confirm_order_buyer extends AppCompatActivity {
         buy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //DatabaseReference sell_data_close_ref = root_ref.child("sell_data_close");
+                model_new_sell_order model_new = new model_new_sell_order(data_dish_name, data_dish_price, data_dish_quantity, data_dish_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name, data_food_category, user_data_email, user_data_phonenum, user_data_username, data_seller_email, data_seller_phonenum, data_seller_username);
+                databaseReference = FirebaseDatabase.getInstance().getReference();
+                databaseReference.child("sell_data_close").push().setValue(model_new);
+                sell_data_ref.child(parent_value).removeValue();
                 sendConfirmationMessage();
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(buyercontactNo, null, buyermessage, null, null);
@@ -142,18 +162,18 @@ public class confirm_order_buyer extends AppCompatActivity {
         });
     }
     protected void sendConfirmationMessage(){
-        buyercontactNo="9028099647";
-        sellercontactNo=contact.getText().toString();
-        buyermessage= "Your Order is confirmed and deatils of the seller are\n" +
-                "Name : "+name.getText().toString()+"\n" +
-                "Address :"+address.getText().toString()+"\n"+
-                "Contact :"+sellercontactNo+"\n"+"Thanks for ordering";
-        sellermessage="Your dish is sold and details of buyer are\n" +
-                "Name : "+"Shrey"+"\n" +
-                "Address :"+"qunipool towers"+"\n"+
-                "Contact :"+buyercontactNo;
-        Log.i("message",buyermessage);
-        Log.i("message",sellermessage);
+        buyercontactNo = user_data_phonenum;
+        sellercontactNo = data_seller_phonenum;
+        buyermessage= "Your Order name: " + data_dish_name + " is confirmed and details of the seller are\n" +
+                "Name : "+ data_seller_username +"\n" +
+                "Address :"+ "Park Victoria" +"\n"+
+                "Contact :"+ data_seller_phonenum +"\n\n"+"Thanks for using FoodGreen.";
+        sellermessage="Your dish name:" + data_dish_name + " is sold and details of buyer are\n" +
+                "Name : "+ user_data_username +"\n" +
+                "Address :"+ "Park Victoria" +"\n"+
+                "Contact :"+ user_data_phonenum + "\n\n" + "Thanks for using FoodGreen.";
+        Log.i("message", buyermessage);
+        Log.i("message", sellermessage);
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.SEND_SMS)
@@ -184,7 +204,7 @@ public class confirm_order_buyer extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
                 }
             }
         }

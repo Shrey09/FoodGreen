@@ -238,6 +238,7 @@
                 android:id="@+id/etbid"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
+                android:inputType="number"
                 android:layout_marginLeft="20dp"
                 android:hint="e.g 12"
                 android:textSize="20dp" />
