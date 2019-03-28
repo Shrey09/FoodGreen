@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.foodgreen">
 
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature
         android:name="android.hardware.camera.any"
@@ -37,6 +39,7 @@
         <activity android:name=".show_data_sell"></activity>
         <activity android:name=".confirm_order_buyer"></activity>
         <activity android:name=".bid_sell"></activity>
+        <activity android:name=".LocationTrack"></activity>
 
     </application>
 
