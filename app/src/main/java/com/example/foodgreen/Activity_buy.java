@@ -221,7 +221,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         data_expected_date = buy_expected_date.getText().toString();
 
         // save into model
-        model_activity_buy model = new model_activity_buy(data_dish_name, data_quantity, data_description, data_expected_time, data_expected_date, food_category_choice, user_data_email);
+        model_activity_buy model = new model_activity_buy(data_dish_name, data_quantity, data_description, data_expected_time, data_expected_date, food_category_choice, user_data_email, user_data_phonenum, user_data_username);
 
         // create userId
         FirebaseUser userId = mAuth.getCurrentUser();

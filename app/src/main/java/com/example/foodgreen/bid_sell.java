@@ -40,7 +40,9 @@ public class bid_sell extends AppCompatActivity {
 
     SharedPreferences sp;
     String user_data_email, user_data_password, user_data_phonenum, user_data_username;
+    String data_buyer_email, data_buyer_phonenum, data_buyer_username;
     TextView show_dish_name, show_description, show_expected_time, show_expected_date, show_quantity, show_food_category;  // textviews to show data
+    long bid_count = 0;
     String data_dish_name, data_description, data_expected_date, data_expected_time, data_quantity, data_food_category;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -84,20 +86,28 @@ public class bid_sell extends AppCompatActivity {
         get_order_data_ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try{
+                    bid_count = dataSnapshot.child("bid_data").getChildrenCount();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
                 data_dish_name = dataSnapshot.child("data_dish_name").getValue(String.class);
                 data_description = dataSnapshot.child("data_description").getValue(String.class);
                 data_expected_time = dataSnapshot.child("data_expected_time").getValue(String.class);
                 data_expected_date = dataSnapshot.child("data_expected_date").getValue(String.class);
                 data_quantity = dataSnapshot.child("data_quantity").getValue(String.class);
                 data_food_category = dataSnapshot.child("food_category").getValue(String.class);
+                data_buyer_email = dataSnapshot.child("user_data_email").getValue(String.class);
+                data_buyer_phonenum = dataSnapshot.child("user_data_phonenum").getValue(String.class);
+                data_buyer_username = dataSnapshot.child("user_data_username").getValue(String.class);
                 show_dish_name.setText(data_dish_name);
                 show_description.setText(data_description);
                 show_expected_time.setText(data_expected_time);
                 show_expected_date.setText(data_expected_date);
                 show_quantity.setText(data_quantity);
                 show_food_category.setText(data_food_category);
-                name.setText(user_data_username);
-                contact.setText(user_data_phonenum);
+                name.setText(data_buyer_username);
+                contact.setText(data_buyer_phonenum);
             }
 
             @Override
@@ -127,26 +137,37 @@ public class bid_sell extends AppCompatActivity {
         bid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (bidvalue.getText().toString().equals("")){
+                    Toast.makeText(bid_sell.this, "Please enter bid value!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                model_bid modelBid = new model_bid(user_data_email, user_data_phonenum, user_data_username, "Dalhousie University", bidvalue.getText().toString());
+                buy_data_open_ref.child(parent_key).child("bid_data").child(String.valueOf(bid_count)).setValue(modelBid);
+
                 sendConfirmationMessage();
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(buyercontactNo, null, buyermessage, null, null);
                 smsManager.sendTextMessage(sellercontactNo, null, sellermessage, null, null);
-                Toast.makeText(getApplicationContext(), "Order Confimed",
+                Toast.makeText(getApplicationContext(), "Order Confirmed",
                         Toast.LENGTH_LONG).show();
+                Intent redirect = new Intent(bid_sell.this, MainActivity.class);
+                startActivity(redirect);
             }
         });
     }
     protected void sendConfirmationMessage(){
-        buyercontactNo="9028099647";
-        sellercontactNo=contact.getText().toString();
-        buyermessage= "Your Order is confirmed and deatils of the seller are\n" +
-                "Name : "+name.getText().toString()+"\n" +
-                "Address :"+address.getText().toString()+"\n"+
-                "Contact :"+sellercontactNo+"\n"+"Thanks for ordering";
-        sellermessage="Your dish is sold and details of buyer are\n" +
-                "Name : "+"Shrey"+"\n" +
-                "Address :"+"qunipool towers"+"\n"+
-                "Contact :"+buyercontactNo;
+        buyercontactNo = data_buyer_phonenum;
+        sellercontactNo = user_data_phonenum;
+        buyermessage = "Your order with dish name: "+ data_dish_name +" has new bid and details of the bid are\n" +
+                "Seller name : "+ user_data_username + "\n" +
+                "Address :"+ "Park Victoria" +"\n"+
+                "Contact :"+ user_data_phonenum +"\n"+
+                "Bid value: " + bidvalue.getText().toString() + "\n\n" + "Thanks for using FoodGreen.";
+        sellermessage = "You added a bid for dish name: " + data_dish_name + " \n" +
+                "Name of buyer: "+ data_buyer_username +"\n" +
+                "Address :"+ "Park Victoria" +"\n"+
+                "Contact :" + data_buyer_phonenum +"\n"+
+                "Bid value: " + bidvalue.getText().toString() + "\n\n" + "Thanks for using FoodGreen.";;
         Log.i("message",buyermessage);
         Log.i("message",sellermessage);
 

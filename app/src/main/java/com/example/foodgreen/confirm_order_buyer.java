@@ -151,6 +151,7 @@ public class confirm_order_buyer extends AppCompatActivity {
                 model_new_sell_order model_new = new model_new_sell_order(data_dish_name, data_dish_price, data_dish_quantity, data_dish_description, data_cook_time, data_cook_date, data_expire_time, data_expire_date, image_name, data_food_category, user_data_email, user_data_phonenum, user_data_username, data_seller_email, data_seller_phonenum, data_seller_username);
                 databaseReference = FirebaseDatabase.getInstance().getReference();
                 databaseReference.child("sell_data_close").push().setValue(model_new);
+                sell_data_ref.child(parent_value).removeValue();
                 sendConfirmationMessage();
                 SmsManager smsManager = SmsManager.getDefault();
                 smsManager.sendTextMessage(buyercontactNo, null, buyermessage, null, null);
@@ -166,11 +167,11 @@ public class confirm_order_buyer extends AppCompatActivity {
         buyermessage= "Your Order name: " + data_dish_name + " is confirmed and details of the seller are\n" +
                 "Name : "+ data_seller_username +"\n" +
                 "Address :"+ "Park Victoria" +"\n"+
-                "Contact :"+ data_seller_phonenum +"\n"+"Thanks for ordering";
+                "Contact :"+ data_seller_phonenum +"\n\n"+"Thanks for using FoodGreen.";
         sellermessage="Your dish name:" + data_dish_name + " is sold and details of buyer are\n" +
                 "Name : "+ user_data_username +"\n" +
                 "Address :"+ "Park Victoria" +"\n"+
-                "Contact :"+ user_data_phonenum;
+                "Contact :"+ user_data_phonenum + "\n\n" + "Thanks for using FoodGreen.";
         Log.i("message", buyermessage);
         Log.i("message", sellermessage);
 
@@ -203,7 +204,7 @@ public class confirm_order_buyer extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                            "SMS failed, please try again.", Toast.LENGTH_LONG).show();
                 }
             }
         }
