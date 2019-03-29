@@ -28,10 +28,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BuyView extends AppCompatActivity {
 
@@ -43,6 +45,9 @@ public class BuyView extends AppCompatActivity {
     ArrayList<String> images_array = new ArrayList<String>();
     ArrayList<String> key_array = new ArrayList<String>();   // To store parent key values
     String[] dish, price, quantity, location, images;
+    List<String> food_categories = new ArrayList<String>();
+    Long count;
+    public String last_food_category;   // just to store last food category and later add it to adapter
 
     android.support.v7.widget.Toolbar toolbar;
     ImageView homeButton, sellButton, neworderbutton, filter;
@@ -87,6 +92,7 @@ public class BuyView extends AppCompatActivity {
             }
         });
 
+
         filter = findViewById(R.id.filterbtn);
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +100,7 @@ public class BuyView extends AppCompatActivity {
                 final AlertDialog mBuilder = new AlertDialog.Builder(BuyView.this).create();
                 View mView =getLayoutInflater().inflate(R.layout.filterview,null);
                 mBuilder.setTitle("Filter");
+
 
                 foodcategory=(Spinner)mView.findViewById(R.id.foodcategory);
                 pricebar=(SeekBar)mView.findViewById(R.id.pricebar);
@@ -118,16 +125,118 @@ public class BuyView extends AppCompatActivity {
 
                     }
                 });
-                ArrayAdapter<String> adapter=new ArrayAdapter<String>(BuyView.this
-                        ,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.foodmenu));
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                foodcategory.setAdapter(adapter);
+
+                food_categories.clear();
+                FirebaseDatabase firebaseDatabase;
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference food_categories_ref = root_ref.child("food_categories");
+                food_categories_ref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds: dataSnapshot.getChildren()){
+
+                            String food_category_key = ds.getKey().toString();
+                            Log.i("KEY: ", ds.getKey().toString());
+                            Log.i("CHILDREN COUNT: ", String.valueOf(ds.getChildrenCount()));
+                            count = ds.getChildrenCount();
+                            for (long i=0; i<count; i++) {
+                                Log.i("Category: ", ds.child(String.valueOf(i)).getValue(String.class));
+                                food_categories.add(ds.child(String.valueOf(i)).getValue(String.class));
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                //ArrayAdapter<String> adapter=new ArrayAdapter<String>(BuyView.this,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.foodmenu));
+                food_categories.add("SELECT CATEGORY");
+                ArrayAdapter<String> foodAdapter = new ArrayAdapter<String>(BuyView.this, android.R.layout.simple_spinner_item, food_categories);
+                foodAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                foodcategory.setAdapter(foodAdapter);
+                foodAdapter.notifyDataSetChanged();
+
 
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("Select food Category"))
+                        if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("SELECT CATEGORY"))
                         {
+                            FirebaseDatabase firebaseDatabase;
+                            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                            DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
+                            String food_category = foodcategory.getSelectedItem().toString();
+
+                            CustomListView customListView=new CustomListView();
+                            food.setAdapter(null);
+                            customListView.notifyDataSetChanged();
+
+
+                            dish_name_array.clear();
+                            price_array.clear();
+                            quantity_array.clear();
+                            images_array.clear();
+                            location_array.clear();
+                            key_array.clear();
+
+                            Log.i("selecte category", food_category);
+                            Log.i("dish name array size", String.valueOf(dish_name_array.size()));
+                            Query query = root_ref.child("sell_data_open").orderByChild("food_category").equalTo(food_category);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        // dataSnapshot is the "issue" node with all children with id 0
+                                        dish_name_array.clear();
+                                        price_array.clear();
+                                        quantity_array.clear();
+                                        images_array.clear();
+                                        location_array.clear();
+                                        key_array.clear();
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            Log.i("Test", "INSIDE sell data");
+
+                                            dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                                            price_array.add(ds.child("data_dish_price").getValue(String.class));
+                                            quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                                            images_array.add(ds.child("image_name").getValue(String.class));
+                                            location_array.add("Dalhousie University");
+                                            key_array.add(ds.getKey().toString());
+                                        }
+
+                                        int count;
+                                        dish = new String[dish_name_array.size()];
+                                        price = new String[dish_name_array.size()];
+                                        quantity = new String[dish_name_array.size()];
+                                        location = new String[dish_name_array.size()];
+                                        images = new String[dish_name_array.size()];
+
+                                        Log.i("Count: ", Integer.toString(dish_name_array.size()));
+                                        for (count = 0; count < dish_name_array.size(); count++) {
+                                            dish[count] = dish_name_array.get(count);
+                                            price[count] = price_array.get(count);
+                                            quantity[count] = quantity_array.get(count);
+                                            location[count] = location_array.get(count);
+                                            images[count] = images_array.get(count);
+                                        }
+                                        CustomListView customListView = new CustomListView();
+                                        food.setAdapter(customListView);
+                                        customListView.notifyDataSetChanged();
+
+                                        }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             Toast.makeText(BuyView.this,
                                     foodcategory.getSelectedItem().toString() + " selected",Toast.LENGTH_SHORT).show();
                             mBuilder.dismiss();
