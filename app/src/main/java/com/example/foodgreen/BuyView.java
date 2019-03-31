@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BuyView extends AppCompatActivity {
@@ -40,6 +41,8 @@ public class BuyView extends AppCompatActivity {
     ListView food;
     ArrayList<String> dish_name_array = new ArrayList<String>();
     ArrayList<String> price_array = new ArrayList<String>();
+    ArrayList<Integer> price_array_long = new ArrayList<Integer>();   // to store price in long
+    int max_price;   // it will be used to make price filter
     ArrayList<String> quantity_array = new ArrayList<String>();
     ArrayList<String> location_array = new ArrayList<String>();
     ArrayList<String> images_array = new ArrayList<String>();
@@ -108,6 +111,8 @@ public class BuyView extends AppCompatActivity {
                 okButton = (Button) mView.findViewById(R.id.okButton);
                 cancelButton = (Button) mView.findViewById(R.id.cancelButton);
 
+                pricebar.setMax(max_price);
+                pricebar.setProgress(max_price);
                 pricetext.setText(String.valueOf(pricebar.getProgress()));
                 pricebar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
@@ -165,33 +170,28 @@ public class BuyView extends AppCompatActivity {
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if(!foodcategory.getSelectedItem().toString().equalsIgnoreCase("SELECT CATEGORY"))
-                        {
+
                             FirebaseDatabase firebaseDatabase;
                             FirebaseAuth mAuth = FirebaseAuth.getInstance();
                             DatabaseReference root_ref = FirebaseDatabase.getInstance().getReference();
-                            String food_category = foodcategory.getSelectedItem().toString();
+                            final String food_category = foodcategory.getSelectedItem().toString();
 
-                            CustomListView customListView=new CustomListView();
-                            food.setAdapter(null);
-                            customListView.notifyDataSetChanged();
-
-
-                            dish_name_array.clear();
-                            price_array.clear();
-                            quantity_array.clear();
-                            images_array.clear();
-                            location_array.clear();
-                            key_array.clear();
-
-                            Log.i("selecte category", food_category);
+                            Log.i("selected category", food_category);
                             Log.i("dish name array size", String.valueOf(dish_name_array.size()));
-                            Query query = root_ref.child("sell_data_open").orderByChild("food_category").equalTo(food_category);
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                            DatabaseReference sell_data_filter_ref = root_ref.child("sell_data_open");
+
+                            //Query query = root_ref.child("sell_data_open").orderByChild("food_category").equalTo(food_category);
+
+                            sell_data_filter_ref.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.exists()) {
+
+                                    // first case is that both filters are selected
+                                    if (!food_category.equals("SELECT CATEGORY") &&
+                                            Integer.parseInt(pricetext.getText().toString()) < max_price) {
                                         // dataSnapshot is the "issue" node with all children with id 0
+                                        Log.i("WHERE? :", "INSIDE FIRST LOOP");
                                         dish_name_array.clear();
                                         price_array.clear();
                                         quantity_array.clear();
@@ -199,14 +199,16 @@ public class BuyView extends AppCompatActivity {
                                         location_array.clear();
                                         key_array.clear();
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            Log.i("Test", "INSIDE sell data");
-
-                                            dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
-                                            price_array.add(ds.child("data_dish_price").getValue(String.class));
-                                            quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
-                                            images_array.add(ds.child("image_name").getValue(String.class));
-                                            location_array.add("Dalhousie University");
-                                            key_array.add(ds.getKey().toString());
+                                            if ((Integer.parseInt(ds.child("data_dish_price").getValue(String.class)) <= Integer.parseInt(pricetext.getText().toString()))
+                                                && food_category.equals(ds.child("food_category").getValue(String.class)))
+                                            {
+                                                dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                                                price_array.add(ds.child("data_dish_price").getValue(String.class));
+                                                quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                                                images_array.add(ds.child("image_name").getValue(String.class));
+                                                location_array.add("Dalhousie University");
+                                                key_array.add(ds.getKey().toString());
+                                            }
                                         }
 
                                         int count;
@@ -230,7 +232,94 @@ public class BuyView extends AppCompatActivity {
 
                                         }
 
+                                    // second case if that ONLY food category is selected
+                                    else if(!food_category.equals("SELECT CATEGORY")){
+                                        Log.i("WHERE? :", "INSIDE SECOND LOOP");
+                                        dish_name_array.clear();
+                                        price_array.clear();
+                                        quantity_array.clear();
+                                        images_array.clear();
+                                        location_array.clear();
+                                        key_array.clear();
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            Log.i("Catrgory: ", food_category);
+                                            if (food_category.equals(ds.child("food_category").getValue(String.class)))
+                                            {
+                                                //Log.i("Test", "INSIDE sell data");
+                                                dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                                                price_array.add(ds.child("data_dish_price").getValue(String.class));
+                                                quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                                                images_array.add(ds.child("image_name").getValue(String.class));
+                                                location_array.add("Dalhousie University");
+                                                key_array.add(ds.getKey().toString());
+                                            }
+                                        }
+
+                                        int count;
+                                        dish = new String[dish_name_array.size()];
+                                        price = new String[dish_name_array.size()];
+                                        quantity = new String[dish_name_array.size()];
+                                        location = new String[dish_name_array.size()];
+                                        images = new String[dish_name_array.size()];
+
+                                        Log.i("Count: ", Integer.toString(dish_name_array.size()));
+                                        for (count = 0; count < dish_name_array.size(); count++) {
+                                            dish[count] = dish_name_array.get(count);
+                                            price[count] = price_array.get(count);
+                                            quantity[count] = quantity_array.get(count);
+                                            location[count] = location_array.get(count);
+                                            images[count] = images_array.get(count);
+                                        }
+                                        CustomListView customListView = new CustomListView();
+                                        food.setAdapter(customListView);
+                                        customListView.notifyDataSetChanged();
+                                    }
+
+                                    // Third case is ONLY price seekbar is selected
+                                    else if (Integer.parseInt(pricetext.getText().toString()) < max_price){
+                                        Log.i("WHERE? :", "INSIDE THIRD LOOP");
+                                        dish_name_array.clear();
+                                        price_array.clear();
+                                        quantity_array.clear();
+                                        images_array.clear();
+                                        location_array.clear();
+                                        key_array.clear();
+                                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            if ((Integer.parseInt(ds.child("data_dish_price").getValue(String.class)) <= Integer.parseInt(pricetext.getText().toString())))
+                                            {
+                                                //Log.i("Test", "INSIDE sell data");
+
+                                                dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
+                                                price_array.add(ds.child("data_dish_price").getValue(String.class));
+                                                quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
+                                                images_array.add(ds.child("image_name").getValue(String.class));
+                                                location_array.add("Dalhousie University");
+                                                key_array.add(ds.getKey().toString());
+                                            }
+                                        }
+
+                                        int count;
+                                        dish = new String[dish_name_array.size()];
+                                        price = new String[dish_name_array.size()];
+                                        quantity = new String[dish_name_array.size()];
+                                        location = new String[dish_name_array.size()];
+                                        images = new String[dish_name_array.size()];
+
+                                        Log.i("Count: ", Integer.toString(dish_name_array.size()));
+                                        for (count = 0; count < dish_name_array.size(); count++) {
+                                            dish[count] = dish_name_array.get(count);
+                                            price[count] = price_array.get(count);
+                                            quantity[count] = quantity_array.get(count);
+                                            location[count] = location_array.get(count);
+                                            images[count] = images_array.get(count);
+                                        }
+                                        CustomListView customListView = new CustomListView();
+                                        food.setAdapter(customListView);
+                                        customListView.notifyDataSetChanged();
+                                    }
+
                                 }
+
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
@@ -238,12 +327,9 @@ public class BuyView extends AppCompatActivity {
                                 }
                             });
                             Toast.makeText(BuyView.this,
-                                    foodcategory.getSelectedItem().toString() + " selected",Toast.LENGTH_SHORT).show();
+                                    "Filter applied",Toast.LENGTH_SHORT).show();
                             mBuilder.dismiss();
-                        }
-                        else {
-                            mBuilder.dismiss();
-                        }
+
                     }
                 });
 
@@ -273,6 +359,7 @@ public class BuyView extends AppCompatActivity {
                 for (DataSnapshot ds: dataSnapshot.getChildren()){
                     dish_name_array.add(ds.child("data_dish_name").getValue(String.class));
                     price_array.add(ds.child("data_dish_price").getValue(String.class));
+                    price_array_long.add(Integer.parseInt(ds.child("data_dish_price").getValue(String.class)));
                     quantity_array.add(ds.child("data_dish_quantity").getValue(String.class));
                     images_array.add(ds.child("image_name").getValue(String.class));
                     location_array.add("Dalhousie University");
@@ -280,6 +367,8 @@ public class BuyView extends AppCompatActivity {
                 }
 
                 int count;
+                max_price = Collections.max(price_array_long);
+                Log.i("Max price", String.valueOf(max_price));
                 dish = new String[dish_name_array.size()];
                 price = new String[dish_name_array.size()];
                 quantity = new String[dish_name_array.size()];
