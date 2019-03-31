@@ -1,9 +1,5 @@
 package com.example.foodgreen;
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +12,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,16 +42,12 @@ import com.google.firebase.database.ValueEventListener;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
-import java.util.Locale;
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
-
 
 public class new_order_sell extends AppCompatActivity implements View.OnClickListener{
 
@@ -69,24 +60,16 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
     List<String> food_categories = new ArrayList<String>();
     int ExpireHour,ExpireMinute,btnCookedYear,btnCookedDay,btnCookedMonth,btnExpireYear,btnExpireMonth,btnExpireDay,CookHour,CookMinute;
     String data_dish_name, data_price, data_quantity, data_description, data_cook_date, data_cook_time, data_expire_date, data_expire_time;
-    Button capureimg,getlocation;
+    Button capureimg;
     ImageView imageView;
     SharedPreferences sp;
-    TextView location;
+
     Integer REQUEST_CAMERA = 1, SELECT_FILE = 0;
     public Spinner food_categories_spinner;   // food category spinner
     Long count;   // to save number of food categories in database
     ArrayAdapter<String> food_categories_adapter;   // adapter for spinner
     String food_category_choice = "ENTER NEW CATEGORY";   // the selected category
     String food_category_key;   // to store child key from firebase
-
-    private ArrayList<String> permissionsToRequest;
-    private ArrayList<String> permissionsRejected = new ArrayList<>();
-    private ArrayList<String> permissions = new ArrayList<>();
-
-    private final static int ALL_PERMISSIONS_RESULT = 101;
-    LocationTrack locationTrack;
-
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
@@ -111,20 +94,6 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("FoodGreen");
         toolbar.setTitleTextColor(Color.BLACK);
-        permissions.add(ACCESS_FINE_LOCATION);
-        permissions.add(ACCESS_COARSE_LOCATION);
-        getlocation = (Button) findViewById(R.id.getlocation);
-        location=(TextView) findViewById(R.id.location);
-
-        permissionsToRequest = findUnAskedPermissions(permissions);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
-            if (permissionsToRequest.size() > 0)
-                requestPermissions(permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-        }
-
 
         // If user is not logged in, force user to log in
         sp = getSharedPreferences("user_data", MODE_PRIVATE);
@@ -228,152 +197,7 @@ public class new_order_sell extends AppCompatActivity implements View.OnClickLis
                 submit_data();
             }
         });
-
-        getlocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                locationTrack = new LocationTrack(new_order_sell.this);
-
-
-                if (locationTrack.canGetLocation()) {
-
-
-                    double longitude = locationTrack.getLongitude();
-                    double latitude = locationTrack.getLatitude();
-
-
-                    String address = getAddress(latitude,longitude);
-                    location.setText(address);
-
-                     Toast.makeText(getApplicationContext() , address, Toast.LENGTH_LONG).show();
-
-                    Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-                } else {
-
-                    locationTrack.showSettingsAlert();
-                }
-
-            }
-        });
     }
-
-
-
-
-
-    //location button click
-
-
-
-    // location
-    private String getAddress(double latitude, double longitude) {
-        StringBuilder result = new StringBuilder();
-        try {
-            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses.size() > 0) {
-                Address address = addresses.get(0);
-                String add = address.getAddressLine(0);
-                add = add + "\n" + address.getCountryName();
-                add = add + "\n" + address.getCountryCode();
-                add = add + "\n" + address.getAdminArea();
-                add = add + "\n" + address.getPostalCode();
-                add = add + "\n" + address.getSubAdminArea();
-                add = add + "\n" + address.getLocality();
-                add = add + "\n" + address.getSubThoroughfare();
-
-                //result.append(address.getLocality()).append("\n");
-                //result.append(address.getCountryName());
-                result.append(add);
-            }
-        } catch (IOException e) {
-            Log.e("tag", e.getMessage());
-        }
-
-        return result.toString();
-    }
-
-
-    private ArrayList<String> findUnAskedPermissions(ArrayList<String> wanted) {
-        ArrayList<String> result = new ArrayList<String>();
-
-        for (String perm : wanted) {
-            if (!hasPermission(perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean hasPermission(String permission) {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED);
-            }
-        }
-        return true;
-    }
-
-    private boolean canMakeSmores() {
-        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        switch (requestCode) {
-
-            case ALL_PERMISSIONS_RESULT:
-                for (String perms : permissionsToRequest) {
-                    if (!hasPermission(perms)) {
-                        permissionsRejected.add(perms);
-                    }
-                }
-
-                if (permissionsRejected.size() > 0) {
-
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(permissionsRejected.get(0))) {
-                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions(permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    });
-                            return;
-                        }
-                    }
-
-                }
-
-                break;
-        }
-
-    }
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        locationTrack.stopListener();
-    }
-// Location code completed
 
     @Override
     public void onClick(View v) {
