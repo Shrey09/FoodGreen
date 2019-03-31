@@ -1,5 +1,6 @@
 package com.example.foodgreen;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -119,6 +121,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         btn_expected_date.setOnClickListener(this);
         btn_expected_time.setOnClickListener(this);
 
+        
         // when submit button placed
         submit_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +131,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         });
         new_food_category = findViewById(R.id.new_food_category);
         new_food_category.setVisibility(View.INVISIBLE);   // initially, set edittext as invisible
-        food_categories_spinner = (Spinner) findViewById(R.id.food_categories_spinner);
+        food_categories_spinner = (Spinner) findViewById(R.id.food_categories_spinner_buy);
         food_categories_adapter = new ArrayAdapter<String>(Activity_buy.this, android.R.layout.simple_spinner_item, food_categories);
         food_categories_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         food_categories_spinner.setAdapter(food_categories_adapter);
