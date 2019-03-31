@@ -230,6 +230,18 @@ public class BuyView extends AppCompatActivity {
                                         food.setAdapter(customListView);
                                         customListView.notifyDataSetChanged();
 
+                                        // onclick event of item in listview
+
+                                        food.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                Intent confirm_buy = new Intent(view.getContext(), confirm_order_buyer.class);
+                                                confirm_buy.putExtra("parent_value", key_array.get(position));
+                                                startActivity(confirm_buy);
+
+                                            }
+                                        });
                                         }
 
                                     // second case if that ONLY food category is selected
@@ -273,6 +285,19 @@ public class BuyView extends AppCompatActivity {
                                         CustomListView customListView = new CustomListView();
                                         food.setAdapter(customListView);
                                         customListView.notifyDataSetChanged();
+
+                                        // onclick event of item in listview
+
+                                        food.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                Intent confirm_buy = new Intent(view.getContext(), confirm_order_buyer.class);
+                                                confirm_buy.putExtra("parent_value", key_array.get(position));
+                                                startActivity(confirm_buy);
+
+                                            }
+                                        });
                                     }
 
                                     // Third case is ONLY price seekbar is selected
@@ -316,6 +341,19 @@ public class BuyView extends AppCompatActivity {
                                         CustomListView customListView = new CustomListView();
                                         food.setAdapter(customListView);
                                         customListView.notifyDataSetChanged();
+
+                                        // onclick event of item in listview
+
+                                        food.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                Intent confirm_buy = new Intent(view.getContext(), confirm_order_buyer.class);
+                                                confirm_buy.putExtra("parent_value", key_array.get(position));
+                                                startActivity(confirm_buy);
+
+                                            }
+                                        });
                                     }
 
                                 }
