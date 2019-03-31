@@ -78,7 +78,7 @@
                 android:text="Select food category"/>
 
             <Spinner
-                android:id="@+id/food_categories_spinner"
+                android:id="@+id/food_categories_spinner_buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"

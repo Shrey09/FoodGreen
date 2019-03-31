@@ -40,9 +40,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:progressDrawable="@drawable/red_scrubber_progress"
-        android:thumb="@drawable/red_scrubber_control"
-        android:max="100"
-        android:progress="100"></SeekBar>
+        android:thumb="@drawable/red_scrubber_control"></SeekBar>
 
     <LinearLayout
         android:layout_width="wrap_content"
