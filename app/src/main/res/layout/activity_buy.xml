@@ -24,11 +24,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/fontfamily"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:textSize="20dp"
+                android:text="Request for new dish"/>
 
             <EditText
                 android:id="@+id/buy_dishname"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
@@ -37,7 +45,8 @@
                 android:fontFamily="@string/fontfamily"
                 android:hint="Enter Dish Name"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null" />
 
 
             <EditText
@@ -51,7 +60,8 @@
                 android:fontFamily="@string/fontfamily"
                 android:hint="Enter Quantity"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <EditText
                 android:id="@+id/editDescription"
@@ -66,7 +76,8 @@
                 android:hint="Enter Description"
                 android:inputType="textMultiLine"
                 android:padding="10dp"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                android:textCursorDrawable="@null"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -127,7 +138,8 @@
                         android:id="@+id/buy_expected_date"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:textCursorDrawable="@null"/>
 
                     <Button
                         android:id="@+id/btn_expected_date"
@@ -144,7 +156,8 @@
                         android:id="@+id/buy_expected_time"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:textCursorDrawable="@null"/>
 
                     <Button
                         android:id="@+id/btn_expected_time"

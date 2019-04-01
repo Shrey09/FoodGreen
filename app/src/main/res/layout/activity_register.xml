@@ -31,7 +31,8 @@
             android:background="@drawable/custom_text"
             android:textSize="20dp"
             android:hint="Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textCursorDrawable="@null"/>
         <EditText
             android:id="@+id/editemail"
             android:layout_width="fill_parent"
@@ -44,7 +45,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textCursorDrawable="@null"/>
         <EditText
             android:id="@+id/editpnum"
             android:layout_width="fill_parent"
@@ -57,7 +59,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:hint="Phone Number"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:textCursorDrawable="@null"/>
         <EditText
             android:id="@+id/editpass"
             android:layout_width="fill_parent"
@@ -70,7 +73,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"/>
         <EditText
             android:id="@+id/editrepass"
             android:layout_width="fill_parent"
@@ -83,7 +87,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:hint="Retype Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textCursorDrawable="@null"/>
 
         <Button
             android:id="@+id/registerbutton"

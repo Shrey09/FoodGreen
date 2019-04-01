@@ -150,7 +150,7 @@ public class bid_sell extends AppCompatActivity {
                 smsManager.sendTextMessage(sellercontactNo, null, sellermessage, null, null);
                 Toast.makeText(getApplicationContext(), "Order Confirmed",
                         Toast.LENGTH_LONG).show();
-                Intent redirect = new Intent(bid_sell.this, MainActivity.class);
+                Intent redirect = new Intent(bid_sell.this, SellView.class);
                 startActivity(redirect);
             }
         });

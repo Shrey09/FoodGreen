@@ -27,7 +27,8 @@
         android:fontFamily="@string/fontfamily"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginEnd="10dp"
+        android:textCursorDrawable="@null"/>
 
     <EditText
         android:id="@+id/login_passw"
@@ -41,7 +42,8 @@
         android:fontFamily="@string/fontfamily"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginEnd="10dp"
+        android:textCursorDrawable="@null"/>
 
     <TextView
         android:id="@+id/textforgotpass"

@@ -121,7 +121,7 @@ public class Activity_buy extends AppCompatActivity implements View.OnClickListe
         btn_expected_date.setOnClickListener(this);
         btn_expected_time.setOnClickListener(this);
 
-        
+
         // when submit button placed
         submit_order.setOnClickListener(new View.OnClickListener() {
             @Override

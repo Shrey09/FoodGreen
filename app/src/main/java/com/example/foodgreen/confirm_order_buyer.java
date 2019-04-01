@@ -158,6 +158,8 @@ public class confirm_order_buyer extends AppCompatActivity {
                 smsManager.sendTextMessage(sellercontactNo, null, sellermessage, null, null);
                 Toast.makeText(getApplicationContext(), "Order Confimed",
                         Toast.LENGTH_LONG).show();
+                Intent redirect = new Intent(confirm_order_buyer.this, BuyView.class);
+                startActivity(redirect);
             }
         });
     }

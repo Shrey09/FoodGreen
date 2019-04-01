@@ -24,11 +24,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/fontfamily"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:textSize="20dp"
+                android:text="Offer new dish"/>
 
             <EditText
                 android:id="@+id/enter_dishname"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
